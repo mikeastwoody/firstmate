@@ -1,0 +1,68 @@
+
+=== FIXTURE: project 'webapp' whose default branch is 'release', not main ===
+origin/HEAD -> origin/release
+331f44c v1
+
+=== A teammate advanced origin/release by 2 commits while a pool worktree sat idle ===
+ed1c531 teammate: v3
+3fa94c9 teammate: v2
+331f44c v1
+
+=== firstmate scaffolds a direct-PR ship brief for that project ===
+scaffolded: /tmp/fm-base-e2e.u5sEWs/home/data/demo-pr/brief.md (ship, mode=direct-PR; replace {TASK})
+
+=== AFTER: generated brief.md - the Setup section the crewmate actually reads ===
+# Setup
+You are in a disposable git worktree of webapp, at a detached HEAD supplied by the worktree pool.
+
+1. **Verify isolation before anything else.** Run `pwd -P` and `git rev-parse --show-toplevel`; both must resolve to the disposable task worktree you were launched in, such as a treehouse pool path or an Orca-managed worktree, not the primary checkout firstmate operates from.
+   The path check is authoritative: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` can help inspect the repo, but they do not prove you are outside the primary checkout.
+   If the top-level path is the primary checkout or not the worktree you were launched in, STOP - do not branch or commit here - append `blocked: launched in primary checkout, not an isolated worktree` to the status file and stop.
+
+2. **Check your base before starting work.** Refresh the remote exactly once, then measure:
+   `git fetch origin --quiet`
+   `git rev-list --count $(git merge-base HEAD origin/release)..origin/release`
+   Only `0` passes against the freshly fetched default branch `origin/release`.
+   If the fetch fails, append `blocked: cannot fetch origin to verify base freshness` to the status file and stop - one fetch, no retry loop.
+   If the count is not `0`, rebase onto `origin/release` before reading or writing anything.
+
+3. Create your branch: `git checkout -b fm/demo-pr`
+
+
+=== BEFORE: the same scaffold at base commit 0866a77, same project ===
+scaffolded: /tmp/fm-base-e2e.u5sEWs/home-old/data/demo-pr/brief.md (ship, mode=direct-PR; replace {TASK})
+# Setup
+You are in a disposable git worktree of webapp, at a detached HEAD on a clean default branch.
+
+**Verify isolation before anything else.** Run `pwd -P` and `git rev-parse --show-toplevel`; both must resolve to the disposable task worktree you were launched in, such as a treehouse pool path or an Orca-managed worktree, not the primary checkout firstmate operates from.
+The path check is authoritative: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` can help inspect the repo, but they do not prove you are outside the primary checkout.
+If the top-level path is the primary checkout or not the worktree you were launched in, STOP - do not branch or commit here - append `blocked: launched in primary checkout, not an isolated worktree` to the status file and stop.
+
+1. First action: create your branch: `git checkout -b fm/demo-pr`
+
+-> BEFORE: an unchecked "clean default branch" reassurance, no rev-list, branch creation is the FIRST action.
+
+=== Crewmate wakes up in its disposable pool worktree (detached HEAD, 2 commits behind) ===
+HEAD -> 331f44c v1
+
+=== Step 1 - verify isolation, as the brief instructs ===
+$ pwd -P                        -> /private/tmp/fm-base-e2e.u5sEWs/pool-worktree
+$ git rev-parse --show-toplevel -> /private/tmp/fm-base-e2e.u5sEWs/pool-worktree
+  primary checkout firstmate operates from -> /tmp/fm-base-e2e.u5sEWs/projects/webapp  (different path: isolated, continue)
+
+=== Step 2 - run the EXACT command the brief rendered, verbatim ===
+$ git fetch origin --quiet
+$ git rev-list --count $(git merge-base HEAD origin/release)..origin/release
+2
+-> not 0: the base is STALE. The brief forbids reading or writing anything until this is 0.
+
+=== Crewmate rebases onto origin/release as instructed, then re-runs the same check ===
+$ git rebase origin/release
+Successfully rebased and updated detached HEAD.
+$ git rev-list --count $(git merge-base HEAD origin/release)..origin/release
+0
+-> 0: base is fresh. Only now does step 3 apply.
+
+=== Step 3 - branch creation, which the brief numbers AFTER the base check ===
+$ git checkout -b fm/demo-pr
+on branch fm/demo-pr, based on ed1c531 teammate: v3
