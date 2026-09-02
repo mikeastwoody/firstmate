@@ -1,0 +1,160 @@
+
+==============================================================
+0. The situation firstmate hands the worker
+==============================================================
+project hazlo default branch (from the repo, not hard-coded): refs/remotes/origin/release
+recycled pool slot HEAD:            ace3682
+slot's cached origin/release:       ace3682   <- stale, never fetched
+true remote default branch tip:     b26a78f
+the slot is 30 commits behind the default branch
+
+local-only project tobydoro: local release is 12 commits AHEAD of its origin
+its recycled slot HEAD:      73510c3
+
+==============================================================
+1. Scaffold the briefs firstmate would hand out
+==============================================================
+$ /Users/mike/.no-mistakes/worktrees/8544444aa3b7/01M1HS83HZF1Z76F10VX3X9YX3/bin/fm-brief.sh ev-nomistakes hazlo --mode no-mistakes
+scaffolded: /tmp/fm-brief-e2e.hNRMcP/home/data/ev-nomistakes/brief.md (ship, mode=no-mistakes; replace {TASK})
+$ /Users/mike/.no-mistakes/worktrees/8544444aa3b7/01M1HS83HZF1Z76F10VX3X9YX3/bin/fm-brief.sh ev-localonly tobydoro --mode local-only
+scaffolded: /tmp/fm-brief-e2e.hNRMcP/home/data/ev-localonly/brief.md (ship, mode=local-only; replace {TASK})
+$ /Users/mike/.no-mistakes/worktrees/8544444aa3b7/01M1HS83HZF1Z76F10VX3X9YX3/bin/fm-brief.sh ev-scout hazlo --scout
+scaffolded: /tmp/fm-brief-e2e.hNRMcP/home/data/ev-scout/brief.md (scout; replace {TASK})
+
+==============================================================
+2. What the worker actually reads (Setup section of the generated brief)
+==============================================================
+--- no-mistakes ship brief (PR path) ---
+# Setup
+You are in a disposable git worktree of hazlo, at a detached HEAD supplied by the worktree pool.
+
+1. **Verify isolation before anything else.** Run `pwd -P` and `git rev-parse --show-toplevel`; both must resolve to the disposable task worktree you were launched in, such as a treehouse pool path or an Orca-managed worktree, not the primary checkout firstmate operates from.
+   The path check is authoritative: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` can help inspect the repo, but they do not prove you are outside the primary checkout.
+   If the top-level path is the primary checkout or not the worktree you were launched in, STOP - do not branch or commit here - append `blocked: launched in primary checkout, not an isolated worktree` to the status file and stop.
+
+2. **Check your base before starting work.** Refresh the remote exactly once, then measure:
+   `git fetch origin --quiet`
+   `git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'`
+   Only `0` passes against the freshly fetched default branch `origin/release`.
+   If the fetch fails, append `blocked: cannot fetch origin to verify base freshness` to the status file and stop - one fetch, no retry loop.
+   If the count is not `0`, rebase onto `'refs/remotes/origin/release'` before reading or writing anything.
+
+3. Create your branch: `git checkout -b fm/ev-nomistakes`
+4. Run `no-mistakes doctor`; if it reports the repo is not initialized here, run `no-mistakes init`.
+
+--- local-only ship brief ---
+# Setup
+You are in a disposable git worktree of tobydoro, at a detached HEAD supplied by the worktree pool.
+
+1. **Verify isolation before anything else.** Run `pwd -P` and `git rev-parse --show-toplevel`; both must resolve to the disposable task worktree you were launched in, such as a treehouse pool path or an Orca-managed worktree, not the primary checkout firstmate operates from.
+   The path check is authoritative: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` can help inspect the repo, but they do not prove you are outside the primary checkout.
+   If the top-level path is the primary checkout or not the worktree you were launched in, STOP - do not branch or commit here - append `blocked: launched in primary checkout, not an isolated worktree` to the status file and stop.
+
+2. **Check your base before starting work.** This task lands locally, so do not fetch; measure against the local branch:
+   `git rev-list --count $(git merge-base HEAD 'refs/heads/release')..'refs/heads/release'`
+   Only `0` passes against your local default branch `release`.
+   If the count is not `0`, rebase onto `'refs/heads/release'` before reading or writing anything.
+
+3. Create your branch: `git checkout -b fm/ev-localonly`
+
+--- scout brief ---
+# Setup
+You are in a disposable git worktree of hazlo, at a detached HEAD supplied by the worktree pool.
+1. **Check your base before starting work.** Refresh the remote exactly once, then measure:
+   `git fetch origin --quiet`
+   `git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'`
+   Only `0` passes against the freshly fetched default branch `origin/release`.
+   If the fetch fails, append `blocked: cannot fetch origin to verify base freshness` to the status file and stop - one fetch, no retry loop.
+   If the count is not `0`, rebase onto `'refs/remotes/origin/release'` before reading or writing anything.
+
+This is a SCOUT task: the deliverable is a written report, not a PR.
+The worktree is your laboratory - install, run, edit, and make scratch commits freely; all of it is discarded at teardown.
+The report is the only thing that survives, so anything worth keeping must be in it.
+
+
+==============================================================
+3. The worker runs the brief's commands verbatim in the recycled slot
+==============================================================
+[control] the same count WITHOUT the brief's mandated fetch, i.e. what a
+          relaunched worktree answers on its stale tracking ref:
+$ git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'
+0
+          ^ 0 would have silently certified a 30-commits-behind base as fresh.
+
+[brief, step 2 as written]
+$ git fetch origin --quiet
+$ git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'
+30
+          ^ not 0 -> the brief says: rebase onto 'refs/remotes/origin/release'
+            before reading or writing anything. The stale base is caught.
+
+[worker does what the brief says, then re-checks]
+$ git rebase --quiet refs/remotes/origin/release
+$ git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'
+0
+          ^ 0 -> passes, and only now does the worker create its branch.
+$ git checkout -q -b fm/ev-nomistakes
+b26a78f upstream change 30
+
+==============================================================
+4. local-only uses the LOCAL default branch, and does not touch the network
+==============================================================
+the local-only brief emits no git fetch at all (checked above)
+$ git rev-list --count $(git merge-base HEAD 'refs/heads/release')..'refs/heads/release'
+12
+          ^ measured against local refs/heads/release. Against the stale
+            origin tracking ref the same slot answers:
+$ git rev-list --count $(git merge-base HEAD refs/remotes/origin/release)..refs/remotes/origin/release
+0
+          ^ 0, i.e. comparing a local-only task against origin would be confidently wrong.
+
+==============================================================
+5. A same-named tag cannot certify a stale base (fully-qualified emitted refs)
+==============================================================
+this clone also holds a TAG literally named origin/release, at the old tip.
+$ git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'
+30   <- emitted (qualified) ref: still catches the stale base
+$ git rev-list --count $(git merge-base HEAD 'origin/release')..'origin/release'
+0   <- an unqualified name would resolve to the tag and report a false pass
+
+==============================================================
+6. Before / after: the same brief scaffolded from the base commit
+==============================================================
+--- BEFORE (base commit d22318e) Setup section ---
+# Setup
+You are in a disposable git worktree of hazlo, at a detached HEAD on a clean default branch.
+
+**Verify isolation before anything else.** Run `pwd -P` and `git rev-parse --show-toplevel`; both must resolve to the disposable task worktree you were launched in, such as a treehouse pool path or an Orca-managed worktree, not the primary checkout firstmate operates from.
+The path check is authoritative: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` can help inspect the repo, but they do not prove you are outside the primary checkout.
+If the top-level path is the primary checkout or not the worktree you were launched in, STOP - do not branch or commit here - append `blocked: launched in primary checkout, not an isolated worktree` to the status file and stop.
+
+1. First action: create your branch: `git checkout -b fm/ev-nomistakes`
+2. Run `no-mistakes doctor`; if it reports the repo is not initialized here, run `no-mistakes init`.
+
+--- AFTER (this branch) Setup section ---
+# Setup
+You are in a disposable git worktree of hazlo, at a detached HEAD supplied by the worktree pool.
+
+1. **Verify isolation before anything else.** Run `pwd -P` and `git rev-parse --show-toplevel`; both must resolve to the disposable task worktree you were launched in, such as a treehouse pool path or an Orca-managed worktree, not the primary checkout firstmate operates from.
+   The path check is authoritative: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` can help inspect the repo, but they do not prove you are outside the primary checkout.
+   If the top-level path is the primary checkout or not the worktree you were launched in, STOP - do not branch or commit here - append `blocked: launched in primary checkout, not an isolated worktree` to the status file and stop.
+
+2. **Check your base before starting work.** Refresh the remote exactly once, then measure:
+   `git fetch origin --quiet`
+   `git rev-list --count $(git merge-base HEAD 'refs/remotes/origin/release')..'refs/remotes/origin/release'`
+   Only `0` passes against the freshly fetched default branch `origin/release`.
+   If the fetch fails, append `blocked: cannot fetch origin to verify base freshness` to the status file and stop - one fetch, no retry loop.
+   If the count is not `0`, rebase onto `'refs/remotes/origin/release'` before reading or writing anything.
+
+3. Create your branch: `git checkout -b fm/ev-nomistakes`
+4. Run `no-mistakes doctor`; if it reports the repo is not initialized here, run `no-mistakes init`.
+
+
+==============================================================
+artifacts written
+==============================================================
+brief-local-only.md
+brief-no-mistakes-BEFORE.md
+brief-no-mistakes.md
+brief-scout.md
+stale-base-caught-transcript.txt
