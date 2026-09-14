@@ -1,0 +1,235 @@
+# Live transcript: pooled worktree base rule + review anchor (branch fm/fm-treehouse-base-obsoleta, target b31a4fa3)
+# Date: 2026-09-14. Driven against the REAL bin/fm-spawn.sh and bin/fm-review-diff.sh from this worktree.
+# "base code" rows run the same scripts extracted from the base commit b182d0f9 (git archive) for contrast.
+#
+# Sandbox (nothing touches a real fleet):
+# - a separate tmux 3.7b server on its own socket (tmux -L fmlive-nm), which fm-spawn drives through TMUX=
+# - real treehouse v2.3.0 running `treehouse get` in that pane, pool rooted per case with TREEHOUSE_ROOT
+# - throwaway FM_HOME / state / data / config / HOME per case; a throwaway project with a bare file:// origin
+# - "local-only landings" = commits on the primary checkout's main that were never pushed (what fm-merge-local.sh leaves)
+# - the agent is a stand-in: raw launch command 'sleep 3600', or a pane-PATH 'codex' that execs sleep (relaunch case)
+# - FM_GATE_REFUSE_BYPASS=1 + FM_SPAWN_NO_GUARD=1, the documented sandbox exemptions the test helpers use
+# Filtered from spawn output: the sandbox brief's "no delivery contract line" warning and the standing-posture notice.
+# Filtered from review output: the sandbox's stale-watcher supervision banner (fm-guard.sh), unrelated to this change.
+
+################ s1 ################
+=== [base code] local-only ship; primary main has 12 fm-merge-local landings origin never received ===
+primary main=85187cd  origin/main=544331b  unpushed=12
+$ bin/fm-spawn.sh tregua-base <project> --mode local-only --yolo off 'sleep 3600'
+spawned tregua-base harness=sleep kind=ship mode=local-only yolo=off window=firstmate:fm-tregua-base worktree=/private/tmp/fm-nm-live.NEXO33/s1-base/pool-root/.treehouse/project-0a1d1c/1/project
+exit=0
+slot HEAD=544331b  commits behind primary main=12  has landed-12.txt: NO
+
+=== [new code] local-only ship; primary main has 12 fm-merge-local landings origin never received ===
+primary main=b91dc58  origin/main=36f600e  unpushed=12
+$ bin/fm-spawn.sh tregua-new <project> --mode local-only --yolo off 'sleep 3600'
+spawned tregua-new harness=sleep kind=ship mode=local-only yolo=off window=firstmate:fm-tregua-new worktree=/private/tmp/fm-nm-live.NEXO33/s1-new/pool-root/.treehouse/project-2e6174/1/project
+exit=0
+slot HEAD=b91dc58  commits behind primary main=0  has landed-12.txt: yes
+
+
+################ s2 ################
+=== s2-scout ===
+primary main=1e09e03  origin/main=bf72eaf  unpushed=9
+$ bin/fm-spawn.sh scoutlive <project> --scout sleep 3600
+spawned scoutlive harness=sleep kind=scout window=firstmate:fm-scoutlive worktree=/private/tmp/fm-nm-live.NEXO33/s2-scout/pool-root/.treehouse/project-e669f0/1/project
+exit=0
+slot HEAD=1e09e03  == origin/main? no  == primary main? yes
+
+=== s3-nomistakes ===
+primary main=214cf27  origin/main=bc6c15c  unpushed=9
+$ bin/fm-spawn.sh nmlive <project> --mode no-mistakes --yolo off sleep 3600
+note: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s3-nomistakes/pool-root/.treehouse/project-c4f425/1/project': main in the primary checkout carries 9 commits origin/main does not, but mode=no-mistakes opens a pull request against origin; starting from origin's tip so those unpushed commits cannot ride along inside it
+spawned nmlive harness=sleep kind=ship mode=no-mistakes yolo=off window=firstmate:fm-nmlive worktree=/private/tmp/fm-nm-live.NEXO33/s3-nomistakes/pool-root/.treehouse/project-c4f425/1/project
+exit=0
+slot HEAD=bc6c15c  == origin/main? yes  == primary main? no
+
+=== s3-directpr ===
+primary main=5ba1b59  origin/main=6d9bac5  unpushed=9
+$ bin/fm-spawn.sh prlive <project> --mode direct-PR --yolo off sleep 3600
+note: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s3-directpr/pool-root/.treehouse/project-b13f59/1/project': main in the primary checkout carries 9 commits origin/main does not, but mode=direct-PR opens a pull request against origin; starting from origin's tip so those unpushed commits cannot ride along inside it
+spawned prlive harness=sleep kind=ship mode=direct-PR yolo=off window=firstmate:fm-prlive worktree=/private/tmp/fm-nm-live.NEXO33/s3-directpr/pool-root/.treehouse/project-b13f59/1/project
+exit=0
+slot HEAD=6d9bac5  == origin/main? yes  == primary main? no
+
+
+################ s4 ################
+=== s4 diverged / local-only: primary main has 3 unpushed landings, origin received 1 forge-only merge ===
+$ bin/fm-spawn.sh div-local-only <project> --mode local-only --yolo off 'sleep 3600'
+note: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s4-diverged-local-only/pool-root/.treehouse/project-ac3d8a/1/project': main in the primary checkout and origin/main have diverged: that branch carries 3 commits origin lacks and lacks 1 commit origin has, so neither contains the other; starting from origin's tip, which carries nothing that branch has landed since they parted
+spawned div-local-only harness=sleep kind=ship mode=local-only yolo=off window=firstmate:fm-div-local-only worktree=/private/tmp/fm-nm-live.NEXO33/s4-diverged-local-only/pool-root/.treehouse/project-ac3d8a/1/project
+exit=0
+slot HEAD=5117cd3  origin/main=5117cd3  primary main=5063e14  slot==origin? yes  has forge-only-1.txt: yes  has landed-1.txt: no
+
+=== s4 diverged / scout: primary main has 3 unpushed landings, origin received 1 forge-only merge ===
+$ bin/fm-spawn.sh div-scout <project> --scout 'sleep 3600'
+note: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s4-diverged-scout/pool-root/.treehouse/project-5f2fec/1/project': main in the primary checkout and origin/main have diverged: that branch carries 3 commits origin lacks and lacks 1 commit origin has, so neither contains the other; starting from origin's tip, which carries nothing that branch has landed since they parted
+spawned div-scout harness=sleep kind=scout window=firstmate:fm-div-scout worktree=/private/tmp/fm-nm-live.NEXO33/s4-diverged-scout/pool-root/.treehouse/project-5f2fec/1/project
+exit=0
+slot HEAD=963438a  origin/main=963438a  primary main=1e742c1  slot==origin? yes  has forge-only-1.txt: yes  has landed-1.txt: no
+
+=== s5 origin ahead: origin received 4 forge merges the primary checkout never pulled ===
+primary main=ff9a3b9  (origin tip not yet fetched by the primary)
+$ bin/fm-spawn.sh origin-ahead <project> --mode no-mistakes --yolo off 'sleep 3600'
+spawned origin-ahead harness=sleep kind=ship mode=no-mistakes yolo=off window=firstmate:fm-origin-ahead worktree=/private/tmp/fm-nm-live.NEXO33/s5-origin-ahead/pool-root/.treehouse/project-e55428/1/project
+exit=0
+slot HEAD=cb8d10c  origin/main=cb8d10c  primary main=ff9a3b9  slot==origin? yes  has forge-only-1.txt: yes  has landed-1.txt: no
+
+################ s6 ################
+=== s6a local-only ship: 3 more fm-merge-local landings arrive after treehouse hands out the slot ===
+$ bin/fm-spawn.sh late-local <project> --mode local-only --yolo off 'sleep 3600'
+note: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s6-late-local/pool-root/.treehouse/project-1bae02/1/project' was 3 commits behind main in the primary checkout; refreshed to e8234bb
+spawned late-local harness=sleep kind=ship mode=local-only yolo=off window=firstmate:fm-late-local worktree=/private/tmp/fm-nm-live.NEXO33/s6-late-local/pool-root/.treehouse/project-1bae02/1/project
+exit=0
+[race] land of 3 commit(s) happened after treehouse handed out the slot
+slot HEAD=e8234bb  primary main=e8234bb  origin/main=91b0f2a  has late-landing-3.txt: yes
+
+=== s6b no-mistakes ship: origin receives 4 forge merges after treehouse hands out the slot ===
+$ bin/fm-spawn.sh late-forge <project> --mode no-mistakes --yolo off 'sleep 3600'
+note: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s6-late-forge/pool-root/.treehouse/project-15b6ec/1/project' was 4 commits behind origin/main; refreshed to ed82784
+spawned late-forge harness=sleep kind=ship mode=no-mistakes yolo=off window=firstmate:fm-late-forge worktree=/private/tmp/fm-nm-live.NEXO33/s6-late-forge/pool-root/.treehouse/project-15b6ec/1/project
+exit=0
+[race] push of 4 commit(s) happened after treehouse handed out the slot
+slot HEAD=ed82784  origin/main=ed82784  has forge-after-4.txt: yes
+
+################ s8 ################
+=== s8 unclean slot: uncommitted work in the slot, primary 4 landings ahead, origin diverged by 1 forge-only merge ===
+$ bin/fm-spawn.sh dirty-race <project> --mode local-only --yolo off 'sleep 3600'
+error: pooled worktree '/private/tmp/fm-nm-live.NEXO33/s8-dirty-race/pool-root/.treehouse/project-d97ca9/1/project' is not clean; refusing to discard uncommitted work while refreshing its base
+exit=1
+[race] wrote uncommitted.txt into /tmp/fm-nm-live.NEXO33/s8-dirty-race/pool-root/.treehouse/project-d97ca9/1/project before the refresh; HEAD then=ea4fcdf
+after refusal: slot HEAD=ea4fcdf  uncommitted.txt: work the captain has not committed  meta published: no
+
+################ s9b ################
+=== s9 relaunch: local-only ship on a project whose primary main is 6 landings ahead of a frozen origin ===
+$ bin/fm-spawn.sh relaunch-live <project> --mode local-only --yolo off   (harness from config/crew-harness: codex; the pane's codex is a stand-in that sleeps)
+spawned relaunch-live harness=codex kind=ship mode=local-only yolo=off window=firstmate:fm-relaunch-live worktree=/private/tmp/fm-nm-live.NEXO33/s9-relaunch/pool-root/.treehouse/project-2c736d/1/project
+exit=0
+spawn base: slot HEAD=e80a8e5 primary main=e80a8e5
+task committed work on fm/relaunch-live (544c288); primary then landed 5 more (main=d1f04be); agent stopped (pane foreground: bash)
+$ bin/fm-spawn.sh relaunch-live --relaunch
+spawned relaunch-live harness=codex kind=ship mode=local-only yolo=off window=firstmate:fm-relaunch-live worktree=/private/tmp/fm-nm-live.NEXO33/s9-relaunch/pool-root/.treehouse/project-2c736d/1/project
+exit=0
+after relaunch: slot HEAD=544c288 on fm/relaunch-live; HEAD unchanged: yes; task-change.txt present: yes; primary's later after-5.txt pulled in: no; pane foreground: codex
+
+################ s10 ################
+=== s10 review of local-only task relaunch-live: branch = spawn base + 1 task commit; primary main has since landed 5 more; origin frozen 6 commits behind the spawn base ===
+--- [base code] $ bin/fm-review-diff.sh relaunch-live --stat
+diff base: origin/main
+ landed-1.txt    | 1 +
+ landed-2.txt    | 1 +
+ landed-3.txt    | 1 +
+ landed-4.txt    | 1 +
+ landed-5.txt    | 1 +
+ landed-6.txt    | 1 +
+ task-change.txt | 1 +
+ 7 files changed, 7 insertions(+)
+exit=0
+--- [new code] $ bin/fm-review-diff.sh relaunch-live --stat
+diff base: main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+
+################ s11 ################
+=== s11a mandated rebase then another landing: relaunch-live rebases onto main (M1), then main lands 2 more (M2) before review ===
+branch=887ab32 main=f168a04 origin/main=2322389
+--- [base code] $ bin/fm-review-diff.sh relaunch-live --stat
+diff base: origin/main
+ after-1.txt     | 1 +
+ after-2.txt     | 1 +
+ after-3.txt     | 1 +
+ after-4.txt     | 1 +
+ after-5.txt     | 1 +
+ landed-1.txt    | 1 +
+ landed-2.txt    | 1 +
+ landed-3.txt    | 1 +
+ landed-4.txt    | 1 +
+ landed-5.txt    | 1 +
+ landed-6.txt    | 1 +
+ task-change.txt | 1 +
+ 12 files changed, 12 insertions(+)
+exit=0
+--- [new code] $ bin/fm-review-diff.sh relaunch-live --stat
+diff base: main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+
+=== s11b review of no-mistakes (PR) task nmlive: spawned on origin's tip; primary main carries 9 unpushed commits ===
+--- [new code] $ bin/fm-review-diff.sh nmlive --stat
+diff base: origin/main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+
+=== s11c review of diverged local-only task div-local-only: spawned on origin's tip (forge-only merge), primary main carries 3 diverged landings ===
+--- [base code] $ bin/fm-review-diff.sh div-local-only --stat
+diff base: origin/main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+--- [new code] $ bin/fm-review-diff.sh div-local-only --stat
+diff base: origin/main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+spawn base = 5117cd3; review starts from merge-base(main, branch)=9e782d0 merge-base(origin/main, branch)=5117cd3
+
+=== s11d review of scout scoutlive on a local-only project (primary 9 ahead of frozen origin) ===
+--- [base code] $ bin/fm-review-diff.sh scoutlive --stat
+diff base: origin/main
+ landed-1.txt    | 1 +
+ landed-2.txt    | 1 +
+ landed-3.txt    | 1 +
+ landed-4.txt    | 1 +
+ landed-5.txt    | 1 +
+ landed-6.txt    | 1 +
+ landed-7.txt    | 1 +
+ landed-8.txt    | 1 +
+ landed-9.txt    | 1 +
+ task-change.txt | 1 +
+ 10 files changed, 10 insertions(+)
+exit=0
+--- [new code] $ bin/fm-review-diff.sh scoutlive --stat
+diff base: main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+
+################ s12 ################
+=== s12 the task has already landed: primary main fast-forwarded onto fm/scoutlive (what fm-merge-local.sh does) ===
+main=2ce1803 fm/scoutlive=2ce1803
+--- [new code] $ bin/fm-review-diff.sh scoutlive --stat
+note: main already contains fm/scoutlive, so there is nothing left to review against it
+diff base: main
+no changes vs main
+exit=0
+
+################ s13 ################
+=== s13 [base code] local-only ship with GIT_TRACE on fm-spawn: which git fetches does resolving the base issue? (primary 7 ahead of frozen origin) ===
+spawned trace-base harness=sleep kind=ship mode=local-only yolo=off window=firstmate:fm-trace-base worktree=/private/tmp/fm-nm-live.NEXO33/s13-trace-base/pool-root/.treehouse/project-451480/1/project
+exit=0
+git fetch / ls-remote / remote-network commands issued by fm-spawn:
+   1 trace: run_command: unset GIT_DIR GIT_PREFIX; GIT_PROTOCOL=version=2 'git-upload-pack '\''/tmp/fm-nm-live.NEXO33/s13-trace-base/origin.git'\'''
+   1 trace: run_command: git rev-list --objects --stdin --not --exclude-hidden=fetch --all --quiet --alternate-refs
+   1 trace: run_command: unset GIT_DIR GIT_PREFIX; GIT_PROTOCOL=version=2 'git-upload-pack '\''/tmp/fm-nm-live.NEXO33/s13-trace-base/origin.git'\'''
+   1 trace: run_command: unset GIT_DIR GIT_PREFIX; GIT_PROTOCOL=version=2 'git-upload-pack '\''/tmp/fm-nm-live.NEXO33/s13-trace-base/origin.git'\'''
+   1 trace: run_command: git rev-list --objects --stdin --not --exclude-hidden=fetch --all --quiet --alternate-refs
+   1 trace: built-in: git fetch --quiet origin
+   1 trace: built-in: git fetch --quiet origin +refs/heads/main:refs/remotes/origin/main
+slot HEAD=bd297e9  primary main=5d84479  origin/main=bd297e9
+
+=== s13 [new code] local-only ship with GIT_TRACE on fm-spawn: which git fetches does resolving the base issue? (primary 7 ahead of frozen origin) ===
+spawned trace-new harness=sleep kind=ship mode=local-only yolo=off window=firstmate:fm-trace-new worktree=/private/tmp/fm-nm-live.NEXO33/s13-trace-new/pool-root/.treehouse/project-ec35a9/1/project
+exit=0
+git fetch / ls-remote / remote-network commands issued by fm-spawn:
+   1 trace: run_command: unset GIT_DIR GIT_PREFIX; GIT_PROTOCOL=version=2 'git-upload-pack '\''/tmp/fm-nm-live.NEXO33/s13-trace-new/origin.git'\'''
+   1 trace: run_command: git rev-list --objects --stdin --not --exclude-hidden=fetch --all --quiet --alternate-refs
+   1 trace: run_command: unset GIT_DIR GIT_PREFIX; GIT_PROTOCOL=version=2 'git-upload-pack '\''/tmp/fm-nm-live.NEXO33/s13-trace-new/origin.git'\'''
+   1 trace: run_command: unset GIT_DIR GIT_PREFIX; GIT_PROTOCOL=version=2 'git-upload-pack '\''/tmp/fm-nm-live.NEXO33/s13-trace-new/origin.git'\'''
+   1 trace: run_command: git rev-list --objects --stdin --not --exclude-hidden=fetch --all --quiet --alternate-refs
+   1 trace: built-in: git fetch --quiet origin
+   1 trace: built-in: git fetch --quiet origin +refs/heads/main:refs/remotes/origin/main
+slot HEAD=bbc991a  primary main=bbc991a  origin/main=87e4efd
+
