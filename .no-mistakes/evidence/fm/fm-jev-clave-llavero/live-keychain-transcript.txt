@@ -1,0 +1,101 @@
+Keychain item readable by real security: yes (length 108)
+throwaway FM_HOME has no .env
+=================== S1-keychain-only
+exit=0
+--- stdout
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 2000   tokens: 454/44
+  rule: rule_1 (The task only edits documentation text such as a README typo)   confidence: 1.0
+  probabilities: default=0.0 rule_1=1.0 rule_2=0.0
+  note: rule matched
+  candidate: claude:claude-sonnet-5  provider=claude  scope=all_models  remaining=95%  spendPriority=0.3271  runway=through_reset  -> eligible
+  profile: --harness 'claude' --model 'claude-sonnet-5' --effort 'low'
+--- stderr
+--- security argv (spy)
+find-generic-password -s typesafe-api-key -w
+list-keychains
+dump-keychain /Users/mike/Library/Keychains/login.keychain-db /Library/Keychains/System.keychain
+find-generic-password -a mike -w -s Claude Code-credentials /Users/mike/Library/Keychains/login.keychain-db
+--- curl invoked?
+yes: 1 call(s) to https://api.typesafe.ai/v1/systemone
+--- Keychain key present in stdout/stderr/argv logs? no
+=================== S2-env-wins
+exit=0
+--- stdout
+dispatch-resolve:
+  status: error
+  reason: http 401 after 2000 ms: {"detail":{"error_type":"authentication_error","message":"Cannot authenticate with the server. Please check your API key and try again."}}
+--- stderr
+dispatch-resolve: error (http 401 after 2000 ms: {"detail":{"error_type":"authentication_error","message":"Cannot authenticate with the server. Please check your API key and try again."}})
+--- security argv (spy)
+(security never invoked)
+--- curl invoked?
+yes: 1 call(s) to https://api.typesafe.ai/v1/systemone
+--- Keychain key present in stdout/stderr/argv logs? no
+=================== S3-dotenv-wins
+exit=0
+--- stdout
+dispatch-resolve:
+  status: error
+  reason: http 401 after 1000 ms: {"detail":{"error_type":"authentication_error","message":"Cannot authenticate with the server. Please check your API key and try again."}}
+--- stderr
+dispatch-resolve: error (http 401 after 1000 ms: {"detail":{"error_type":"authentication_error","message":"Cannot authenticate with the server. Please check your API key and try again."}})
+--- security argv (spy)
+(security never invoked)
+--- curl invoked?
+yes: 1 call(s) to https://api.typesafe.ai/v1/systemone
+--- Keychain key present in stdout/stderr/argv logs? no
+=================== S4-no-keychain-item
+exit=0
+--- stdout
+--- stderr
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment, /tmp/fm-kc-live.uBx4QJ/home/.env, and Keychain service typesafe-api-key)
+--- security argv (spy)
+find-generic-password -s typesafe-api-key -w
+--- curl invoked?
+no (no network call)
+--- Keychain key present in stdout/stderr/argv logs? no
+=================== S5-no-security-command
+exit=0
+--- stdout
+--- stderr
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment, /tmp/fm-kc-live.uBx4QJ/home/.env, and Keychain service typesafe-api-key)
+--- security argv (spy)
+(security never invoked)
+--- curl invoked?
+no (no network call)
+--- Keychain key present in stdout/stderr/argv logs? no
+=================== bootstrap S6a-keychain-approval
+crew-dispatch.json: {"rules":[{"when":"hard design","approval":"firstmate","use":{"harness":"claude"}}]}
+exit=0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - approval must be "captain" when present
+--- security argv (spy)
+find-generic-password -s typesafe-api-key -w
+--- Keychain key present in bootstrap output? no
+=================== bootstrap S6b-no-item-approval
+crew-dispatch.json: {"rules":[{"when":"hard design","approval":"firstmate","use":{"harness":"claude"}}]}
+exit=0
+--- CREW_DISPATCH lines:
+(none)
+--- security argv (spy)
+find-generic-password -s typesafe-api-key -w
+--- Keychain key present in bootstrap output? no
+=================== bootstrap S6c-keychain-gemini
+crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+exit=0
+--- CREW_DISPATCH lines:
+(none)
+--- security argv (spy)
+find-generic-password -s typesafe-api-key -w
+--- Keychain key present in bootstrap output? no
+=================== bootstrap S6d-no-item-gemini
+crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+exit=0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - unverified harness: gemini
+--- security argv (spy)
+find-generic-password -s typesafe-api-key -w
+--- Keychain key present in bootstrap output? no
+scratch dir: /tmp/fm-kc-live.uBx4QJ
