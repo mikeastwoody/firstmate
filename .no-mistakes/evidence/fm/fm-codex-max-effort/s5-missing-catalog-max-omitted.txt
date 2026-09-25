@@ -1,0 +1,26 @@
+# Scenario 5 (adversarial) - fm-spawn --harness codex --model gpt-6-astra --effort max with CODEX_HOME pointing at an empty dir (no models_cache.json)
+## command driven in the lab pane (private tmux socket fm-lab, lab FM_HOME)
+CODEX_HOME=/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda/codex-home-empty bin/fm-spawn.sh labnocatalog <lab-sm-home> --harness codex --model gpt-6-astra --effort max --secondmate
+## fm-spawn stdout+stderr
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda
+warning: secondmate labnocatalog sync skipped before launch: primary default-branch commit cannot be resolved
+fm-config-inherit: warning: skipped crew-harness for /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labnocatalog/config: destination does not allow inherited item (not gitignored or guard failed)
+warning: codex max reasoning effort not passed for model gpt-6-astra (/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda/codex-home-empty/models_cache.json is missing); the worker runs at Codex's own default
+spawned labnocatalog harness=codex kind=secondmate mode=secondmate yolo=off window=primary:fm-labnocatalog worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labnocatalog
+exit=0
+## state/labnocatalog.meta (profile axes)
+harness=codex
+kind=secondmate
+model=gpt-6-astra
+effort=max
+## argv of the real codex process launched in window primary:fm-labnocatalog (pid 70534)
+codex --model gpt-6-astra --dangerously-bypass-approvals-and-sandbox <launch brief elided>
+## codex pane
+/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labnocatalog master*                                                                                                           sm-labnocatalog
+❯ export GOTMPDIR=/tmp/fm-labnocatalog/gotmp
+export COMPACT_ADVISER_DISABLE=1
+/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labnocatalog master*                                                                                                           sm-labnocatalog
+❯ export COMPACT_ADVISER_DISABLE=1
+/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labnocatalog master*                                                                                                           sm-labnocatalog
+❯ . '/tmp/fm-labnocatalog+3e81c9e7fac599eebc2d42b4a43e6dd290818645e59ac53637a829781a0e4bbe/launch.s1790338131.68175.17749.sh'
+Installing daemon from CLI version 0.157.0 into /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.duNtda/codex-home-empty/packages/app-server-daemon...

@@ -1,0 +1,24 @@
+# Scenario 4 (regression) - fm-spawn --harness codex --model gpt-6-astra --effort xhigh
+## command driven in the lab pane (private tmux socket fm-lab, lab FM_HOME)
+bin/fm-spawn.sh labastraxhigh <lab-sm-home> --harness codex --model gpt-6-astra --effort xhigh --secondmate
+## fm-spawn stdout+stderr
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda
+warning: secondmate labastraxhigh sync skipped before launch: primary default-branch commit cannot be resolved
+fm-config-inherit: warning: skipped crew-harness for /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labastraxhigh/config: destination does not allow inherited item (not gitignored or guard failed)
+spawned labastraxhigh harness=codex kind=secondmate mode=secondmate yolo=off window=primary:fm-labastraxhigh worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labastraxhigh
+exit=0
+## state/labastraxhigh.meta (profile axes)
+harness=codex
+kind=secondmate
+model=gpt-6-astra
+effort=xhigh
+## argv of the real codex process launched in window primary:fm-labastraxhigh (pid 61494)
+codex --model gpt-6-astra -c model_reasoning_effort="xhigh" --dangerously-bypass-approvals-and-sandbox <launch brief elided>
+## codex pane
+  Folder access
+  /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-labastraxhigh
+  Trust this folder? Codex can read, edit, and run files here, subject to your permission settings. Folder settings can run code automatically, even without a model request. Continue only if you trust these files. Your
+  trust decision will be saved.
+› 1. Trust and continue
+  2. Quit
+  enter continue · esc quit

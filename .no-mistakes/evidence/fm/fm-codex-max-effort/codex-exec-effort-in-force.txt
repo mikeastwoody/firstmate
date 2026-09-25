@@ -1,0 +1,37 @@
+# Codex's own report of the effort in force for each launch-argv shape (codex-cli 0.157.0, operator config.toml: model=gpt-5.6-terra, model_reasoning_effort=xhigh)
+### A. fixed launcher, astra (S1 argv): --model gpt-6-astra -c model_reasoning_effort=max
+$ codex exec --ephemeral --skip-git-repo-check -s read-only -m gpt-6-astra -c model_reasoning_effort="max" 'Reply with the single word OK.'
+model: gpt-6-astra
+provider: openai
+reasoning effort: max
+OK
+OK
+(completed; the model replied)
+
+### B. base launcher, astra (S0 argv): --model gpt-6-astra, no effort flag
+$ codex exec --ephemeral --skip-git-repo-check -s read-only -m gpt-6-astra 'Reply with the single word OK.'
+model: gpt-6-astra
+provider: openai
+reasoning effort: xhigh
+OK
+OK
+(completed; the model replied)
+
+### C. fixed launcher, default model (S2 argv): -c model_reasoning_effort=max only
+$ codex exec --ephemeral --skip-git-repo-check -s read-only -c model_reasoning_effort="max" 'Reply with the single word OK.'
+model: gpt-5.6-terra
+provider: openai
+reasoning effort: max
+OK
+OK
+(completed; the model replied)
+
+### D. fixed launcher, gpt-5.5 (S3 argv): --model gpt-5.5, max omitted
+$ codex exec --ephemeral --skip-git-repo-check -s read-only -m gpt-5.5 'Reply with the single word OK.'
+model: gpt-5.5
+provider: openai
+reasoning effort: xhigh
+OK
+OK
+(completed; the model replied)
+

@@ -1,0 +1,22 @@
+# Scenario 6 - typed dispatch resolver accepts a codex max rule for a non-Luna model (real bin/fm-dispatch-resolve.sh, lab FM_HOME, curl removed from PATH so no request can leave the machine)
+## lab config/crew-dispatch.json
+{"rules":[{"when":"large multi-file refactors that need deep reasoning","use":{"harness":"codex","model":"gpt-6-astra","effort":"max"}}],"default":{"harness":"codex","model":"gpt-6-astra","effort":"xhigh"}}
+
+## FIXED (/Users/mike/.no-mistakes/worktrees/8544444aa3b7/01M3C5EKF8WC8YD8530890CJEH): TYPESAFE_API_KEY=<dummy, never sent> bin/fm-dispatch-resolve.sh data/labdispatch/brief.md
+dispatch-resolve: error (curl not installed)
+dispatch-resolve:
+  status: error
+  reason: curl not installed
+(exit 0)
+
+## BASE c643b57 (git archive export): TYPESAFE_API_KEY=<dummy, never sent> bin/fm-dispatch-resolve.sh data/labdispatch/brief.md
+error: malformed rules file: /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda/config/crew-dispatch.json - each use profile effort must be supported by its harness and model
+(exit 2)
+
+# Scenario 6b (adversarial) - the widened codex check still rejects efforts Codex does not have
+## FIXED: rule {harness:codex, model:gpt-6-astra, effort:ultra}
+error: malformed rules file: /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda/config/crew-dispatch.json - each use profile effort must be supported by its harness and model
+(exit 2)
+## FIXED: rule {harness:codex, model:gpt-6-astra, effort:turbo}
+error: malformed rules file: /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda/config/crew-dispatch.json - each use profile effort must be supported by its harness and model
+(exit 2)

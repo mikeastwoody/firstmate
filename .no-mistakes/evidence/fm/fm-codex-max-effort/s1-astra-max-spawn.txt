@@ -1,0 +1,27 @@
+# Scenario 1 - fm-spawn --harness codex --model gpt-6-astra --effort max (lab secondmate, private tmux socket fm-lab)
+## installed catalog entry (${CODEX_HOME:-~/.codex}/models_cache.json, codex-cli 0.157.0)
+{"slug":"gpt-6-astra","supported":["low","medium","high","xhigh","max","ultra"],"default_reasoning_level":"medium"}
+## command driven in the lab pane
+bin/fm-spawn.sh labastramax <lab-sm-home> --harness codex --model gpt-6-astra --effort max --secondmate
+## fm-spawn stdout+stderr
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-lab.duNtda
+warning: secondmate labastramax sync skipped before launch: primary default-branch commit cannot be resolved
+fm-config-inherit: warning: skipped crew-harness for /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-astra-max/config: destination does not allow inherited item (not gitignored or guard failed)
+spawned labastramax harness=codex kind=secondmate mode=secondmate yolo=off window=primary:fm-labastramax worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-astra-max
+exit=0
+## state/labastramax.meta (profile axes)
+window=primary:fm-labastramax
+harness=codex
+kind=secondmate
+model=gpt-6-astra
+effort=max
+## argv of the real codex process running in window primary:fm-labastramax (pid 83960)
+codex --model gpt-6-astra -c model_reasoning_effort="max" --dangerously-bypass-approvals-and-sandbox \040-cFIRSTMATE_OP: v1 launch-brief: Disposable lab charter for labastramax. Do not run any command
+## codex pane (first render, then Codex's own folder-trust prompt for the untrusted lab dir)
+  Folder access
+  /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab-sm.75F7f3/sm-astra-max
+  Trust this folder? Codex can read, edit, and run files here, subject to your permission settings. Folder settings can run code automatically, even without a model request. Continue only if you trust these files. Your
+  trust decision will be saved.
+› 1. Trust and continue
+  2. Quit
+  enter continue · esc quit
