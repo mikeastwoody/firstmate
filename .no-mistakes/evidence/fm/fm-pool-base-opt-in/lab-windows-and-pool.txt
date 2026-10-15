@@ -1,0 +1,23 @@
+# lab tmux server (private socket fm-lab): windows created by bin/fm-spawn.sh
+1 bash cwd=/Users/mike/.no-mistakes/worktrees/8544444aa3b7/01M4ZX9JQ61DPTE40S1KFJZZER
+2 fm-lab-default-lo-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/1/labproj
+3 fm-lab-default-scout-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/2/labproj
+4 fm-lab-optin-lo-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/3/labproj
+5 fm-lab-optin-scout-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/4/labproj
+6 fm-lab-optin-dpr-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/5/labproj
+7 fm-lab-optin-nm-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/6/labproj
+8 fm-lab-optin-diverged-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/7/labproj
+9 fm-lab-optin-base-r1 cwd=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/8/labproj
+
+# treehouse pool (TREEHOUSE_ROOT inside the lab)
+1
+2
+3
+4
+5
+6
+7
+8
+treehouse-state.json
+treehouse-state.key
+treehouse-state.lock

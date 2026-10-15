@@ -1,0 +1,17 @@
+## lab-optin-scout-r1
+flag config/spawn-base-primary-checkout present: yes
+$ FM_HOME=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC bin/fm-spawn.sh lab-optin-scout-r1 /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/work/labproj --scout
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+spawned lab-optin-scout-r1 harness=codex kind=scout window=primary:fm-lab-optin-scout-r1 worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/4/labproj
+exit=0
+recorded meta:
+  worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/4/labproj
+  kind=scout
+slot HEAD    : d94ddf2 land: local-only landing 3
+origin/main  : 1d79cf0 initial: instructions v1
+primary main : d94ddf2 land: local-only landing 3
+slot AGENTS.md -> Instruction marker: FRESH-LOCAL-v2
+slot files   : AGENTS.md README.md landed-2.txt landed-3.txt 
+slot status  : 0 uncommitted paths
+

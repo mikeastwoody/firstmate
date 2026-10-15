@@ -1,0 +1,21 @@
+## opted-in home: promote scout lab-optin-scout-r1 to direct-PR (flag present: yes)
+$ FM_HOME=$LAB bin/fm-promote.sh lab-optin-scout-r1 --mode direct-PR --yolo off
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+warn: no registry at /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/projects.md; defaulting labproj to no-mistakes off
+promoted lab-optin-scout-r1 to ship mode=direct-PR yolo=off (teardown protection restored)
+wrote ship instructions for mode=direct-PR: /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/lab-optin-scout-r1/ship-instructions.md
+next: FM_HOME=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC bin/fm-send.sh fm-lab-optin-scout-r1 "$(cat /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/lab-optin-scout-r1/ship-instructions.md)"
+exit=0
+ship-instructions.md step 3:
+11:3. Return to a clean copy of origin's default branch rather than the primary checkout's, which can carry commits origin has never received, then create your branch: `git checkout -b fm/lab-optin-scout-r1 --`.
+
+## home without the flag: promote scout lab-default-scout-r1 to direct-PR (flag present: no)
+$ FM_HOME=$LAB bin/fm-promote.sh lab-default-scout-r1 --mode direct-PR --yolo off
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+warn: no registry at /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/projects.md; defaulting labproj to no-mistakes off
+promoted lab-default-scout-r1 to ship mode=direct-PR yolo=off (teardown protection restored)
+wrote ship instructions for mode=direct-PR: /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/lab-default-scout-r1/ship-instructions.md
+next: FM_HOME=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC bin/fm-send.sh fm-lab-default-scout-r1 "$(cat /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/lab-default-scout-r1/ship-instructions.md)"
+exit=0
+ship-instructions.md step 3:
+11:3. Return to a clean default-branch base, then create your branch: `git checkout -b fm/lab-default-scout-r1 --`.

@@ -1,0 +1,26 @@
+## local-only ship lab-optin-lo-r1, flag present
+$ FM_HOME=$LAB bin/fm-review-diff.sh lab-optin-lo-r1 --stat
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+diff base: main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0
+
+## same task, flag removed (what the review would show without the opt-in-aware anchor)
+$ FM_HOME=$LAB bin/fm-review-diff.sh lab-optin-lo-r1 --stat
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+diff base: origin/main
+ AGENTS.md       | 2 +-
+ landed-2.txt    | 1 +
+ landed-3.txt    | 1 +
+ task-change.txt | 1 +
+ 4 files changed, 4 insertions(+), 1 deletion(-)
+exit=0
+
+## direct-PR ship lab-optin-dpr-r1, flag present
+$ FM_HOME=$LAB bin/fm-review-diff.sh lab-optin-dpr-r1 --stat
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+diff base: origin/main
+ task-change.txt | 1 +
+ 1 file changed, 1 insertion(+)
+exit=0

@@ -1,0 +1,21 @@
+## lab-optin-base-r1
+flag config/spawn-base-primary-checkout present: yes
+$ FM_HOME=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC bin/fm-spawn.sh lab-optin-base-r1 /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/work/labproj --scout --base-branch feature/hub
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+warn: no registry at /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/data/projects.md; defaulting labproj to no-mistakes off
+spawned lab-optin-base-r1 harness=codex kind=scout window=primary:fm-lab-optin-base-r1 worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/8/labproj
+exit=0
+recorded meta:
+  worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/8/labproj
+  kind=scout
+  base_branch=feature/hub
+slot HEAD    : 1abf4d4 hub: origin copy
+origin/main  : 4656d02 forge-only commit the primary never pulled
+primary main : d94ddf2 land: local-only landing 3
+slot files   : AGENTS.md README.md forge-only.txt hub.txt 
+slot status  : 0 uncommitted paths
+
+origin/feature/hub : 1abf4d4 hub: origin copy
+local feature/hub  : 48bd9a5 hub: local-only commit
+slot contains hub-local.txt (local-only commit): no

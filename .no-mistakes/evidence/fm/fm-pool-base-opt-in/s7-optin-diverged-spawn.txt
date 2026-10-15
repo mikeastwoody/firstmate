@@ -1,0 +1,22 @@
+## lab-optin-diverged-r1
+flag config/spawn-base-primary-checkout present: yes
+$ FM_HOME=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC bin/fm-spawn.sh lab-optin-diverged-r1 /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/work/labproj --mode local-only --yolo off
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+notice: lab-optin-diverged-r1 ships mode=local-only while the standing posture for labproj is no-mistakes - less rigor than the captain's standing posture; proceed only on a current explicit captain instruction or an intake judgment you can state
+note: pooled worktree '/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/7/labproj': main in the primary checkout has diverged from origin/main (ahead by 3, behind by 1); starting from origin's tip
+spawned lab-optin-diverged-r1 harness=codex kind=ship mode=local-only yolo=off window=primary:fm-lab-optin-diverged-r1 worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/7/labproj
+exit=0
+recorded meta:
+  worktree=/private/var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/fm-lab.bIhpVC/pool/.treehouse/labproj-5becd5/7/labproj
+  kind=ship
+  mode=local-only
+slot HEAD    : 4656d02 forge-only commit the primary never pulled
+origin/main  : 4656d02 forge-only commit the primary never pulled
+primary main : d94ddf2 land: local-only landing 3
+slot AGENTS.md -> Instruction marker: STALE-ORIGIN-v1
+slot files   : AGENTS.md README.md forge-only.txt 
+slot status  : 0 uncommitted paths
+
+primary main vs origin/main after spawn's fetch: ahead 3, behind 1
+slot contains forge-only.txt: yes
