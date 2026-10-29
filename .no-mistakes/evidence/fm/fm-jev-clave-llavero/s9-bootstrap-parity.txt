@@ -1,0 +1,83 @@
+# Live, head bcdebef5: bin/fm-bootstrap.sh's typed-validation gate agrees with the resolver when the typesafe key exists only as a declared source; bootstrap never runs security.
+# Read-only bootstrap (detect-only, network skipped) in a marked lab home; the logging security shim is first on PATH.
+
+===== B1 gemini profile, no declaration -> today's baseline flags gemini =====
+# config/crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+# config/dispatch-credential-sources.json: -
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - unverified harness: gemini
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+===== B2 gemini profile, declared typesafe source -> typed validation on, gemini accepted (resolver accepts it too, R1) =====
+# config/crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+# config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+(none: crew-dispatch.json accepted)
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+===== B3 approval "Captain", declared typesafe source -> bootstrap flags it (resolver exits 2 on it, R2) =====
+# config/crew-dispatch.json: {"rules":[{"when":"hard design","approval":"Captain","use":{"harness":"claude"}}]}
+# config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - approval must be "captain" when present
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+===== B4 approval "Captain", no declaration -> resolver-only field ignored as before =====
+# config/crew-dispatch.json: {"rules":[{"when":"hard design","approval":"Captain","use":{"harness":"claude"}}]}
+# config/dispatch-credential-sources.json: -
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+(none: crew-dispatch.json accepted)
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+===== B5 gemini profile, INVALID declaration (credential value field) -> typed stays off =====
+# config/crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+# config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "key": "sk-NOT-READ"}}
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - unverified harness: gemini
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+===== B6 gemini profile, openrouter-only declaration -> typed stays off =====
+# config/crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+# config/dispatch-credential-sources.json: {"openrouter": {"source": "macos-keychain", "service": "fm-lab-openrouter"}}
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - unverified harness: gemini
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+===== B7 BASE b936f040 bootstrap, gemini profile, declared typesafe source -> the old mismatch (flags gemini the resolver accepts) =====
+# config/crew-dispatch.json: {"rules":[{"when":"gemini work","use":{"harness":"gemini","model":"gemini-3.8-flash-high","provider":"google"}}]}
+# config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# no TYPESAFE_API_KEY in the environment or .env
+$ FM_HOME=$LAB/bhome FM_ROOT_OVERRIDE=$LAB/bhome FM_BOOTSTRAP_DETECT_ONLY=1 FM_BOOTSTRAP_NETWORK=skip /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-credsrc-lab.r1zuMC/base/bin/fm-bootstrap.sh
+--- exit: 0
+--- CREW_DISPATCH lines:
+CREW_DISPATCH: invalid config/crew-dispatch.json - unverified harness: gemini
+--- other bootstrap lines (unrelated host/tool detection): 1
+--- security invocations: none
+
+--- security invocations across all bootstrap runs: none
+
+# Note: the one non-CREW_DISPATCH bootstrap line in every run is "OUTDATED: quota-axi (installed: unparseable ...)", caused by the lab's fake quota-axi shim on PATH (it does not answer --version); unrelated to this change.

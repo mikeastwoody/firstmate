@@ -1,0 +1,74 @@
+# Live, head bcdebef5: --supports-credential-source <source> is a non-secret supported/unsupported answer.
+# A malformed declaration holding SHOULD-NOT-PRINT is planted in the home for C1-C5 to show the probe neither reads it nor runs security.
+
+===== C1 macos-keychain on this macOS host -> supported, exit 0 =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh --supports-credential-source macos-keychain 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "x", "key": "SHOULD-NOT-PRINT"}}
+--- exit: 0   (wall 1793307212154-1793307212108 = 46 ms)
+--- stdout: supported 
+--- stderr: 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+
+===== C2 unknown adapter -> unsupported, exit 1 =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh --supports-credential-source vault 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "x", "key": "SHOULD-NOT-PRINT"}}
+--- exit: 1   (wall 1793307212289-1793307212248 = 41 ms)
+--- stdout: unsupported 
+--- stderr: 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+
+===== C3 macos-keychain on a host whose uname is Linux -> unsupported, exit 1 =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh --supports-credential-source macos-keychain 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "x", "key": "SHOULD-NOT-PRINT"}}
+--- exit: 1   (wall 1793307212432-1793307212380 = 52 ms)
+--- stdout: unsupported 
+--- stderr: 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+
+===== C4 macos-keychain with no security command on PATH -> unsupported, exit 1 =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh --supports-credential-source macos-keychain 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "x", "key": "SHOULD-NOT-PRINT"}}
+--- exit: 1   (wall 1793307212569-1793307212527 = 42 ms)
+--- stdout: unsupported 
+--- stderr: 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+
+/Users/mike/.no-mistakes/evidence/01M64PBEHSJ6GP4SNJBS0Q9PSR/lab-harness/drive.sh: line 19: /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-credsrc-lab.r1zuMC/home/config/dispatch-credential-sources.json: Permission denied
+===== C5 declaration unreadable (mode 000) -> probe unaffected, supported, exit 0 =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh --supports-credential-source macos-keychain 
+# $LAB/home/config/dispatch-credential-sources.json: 
+--- exit: 0   (wall 1793307212711-1793307212665 = 46 ms)
+--- stdout: supported 
+--- stderr: 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+
+===== C6 missing source value -> usage error, exit 2 =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh --supports-credential-source 
+# $LAB/home/config/dispatch-credential-sources.json: (absent)
+--- exit: 2   (wall 1793307212863-1793307212821 = 42 ms)
+--- stdout: 
+--- stderr: error: --supports-credential-source needs a value 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+
+===== C7 base b936f040 resolver has no probe (unknown flag, exit 2) =====
+$ FM_HOME=$LAB/home /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-credsrc-lab.r1zuMC/base/bin/fm-dispatch-resolve.sh --supports-credential-source macos-keychain 
+# $LAB/home/config/dispatch-credential-sources.json: (absent)
+--- exit: 2   (wall 1793307212993-1793307212954 = 39 ms)
+--- stdout: 
+--- stderr: error: unknown flag --supports-credential-source 
+--- security invocations: none
+--- curl: none
+--- quota-axi: none
+

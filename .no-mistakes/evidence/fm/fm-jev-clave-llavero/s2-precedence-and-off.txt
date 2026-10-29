@@ -1,0 +1,147 @@
+# Live, head bcdebef5: environment > .env > declared source; absent declaration + absent key = off (same harness as s1)
+
+===== S2a environment key + .env key + declaration -> environment key wins, Keychain never read =====
+$ FM_HOME=$LAB/home TYPESAFE_API_KEY=<canary> bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: TYPESAFE_API_KEY=<.env canary> 
+--- exit: 0   (wall 1793307089545-1793307089293 = 252 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 68   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+(none)
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.cKTvaTtBrv -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <env-canary>","authorization_is":"env-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== S2b .env key + declaration -> .env key wins, Keychain never read =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: TYPESAFE_API_KEY=<.env canary> 
+--- exit: 0   (wall 1793307090056-1793307089640 = 416 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 123   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+(none)
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.I7jMagZClH -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <dotenv-canary>","authorization_is":"dotenv-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== S2c environment key + INVALID declaration -> declaration not consulted, resolves with the environment key =====
+$ FM_HOME=$LAB/home TYPESAFE_API_KEY=<canary> bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "key": "sk-NOT-A-REAL-VALUE"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307090822-1793307090243 = 579 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 126   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+(none)
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.78gDfjNI0S -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <env-canary>","authorization_is":"env-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== S2d no declaration, no key anywhere -> off, no Keychain/network/quota call (today's behavior) =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: (absent)
+# .env: (absent)
+--- exit: 0   (wall 1793307091080-1793307090992 = 88 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== S2e empty declaration object, no key -> off =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {}
+# .env: (absent)
+--- exit: 0   (wall 1793307091362-1793307091248 = 114 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+

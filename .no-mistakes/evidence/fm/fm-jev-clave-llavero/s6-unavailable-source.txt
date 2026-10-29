@@ -1,0 +1,154 @@
+# Live, head bcdebef5: a declared source that this host cannot run or that yields no key is a sanitized 'error' outcome ending 'nothing sent', exit 0, with no network or quota call.
+# X1-X3 use the REAL /usr/bin/security against the throwaway keychain. X4 removes security from PATH; X5 fakes a non-macOS uname; X6 replaces security with a stand-in that never answers (an unanswered access prompt).
+
+===== X1 declared item does not exist (real security exits 44) =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-no-such-item"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307180303-1793307180197 = 106 ms)
+--- stdout:
+dispatch-resolve:
+  status: error
+  reason: credential source macos-keychain declared for typesafe is unavailable; nothing sent
+--- stderr:
+dispatch-resolve: error (credential source macos-keychain declared for typesafe is unavailable; nothing sent)
+--- security invocations:
+argv: find-generic-password -s fm-lab-no-such-item -w
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== X2 declared service exists but the account does not match =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "someone-else"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307180482-1793307180385 = 97 ms)
+--- stdout:
+dispatch-resolve:
+  status: error
+  reason: credential source macos-keychain declared for typesafe is unavailable; nothing sent
+--- stderr:
+dispatch-resolve: error (credential source macos-keychain declared for typesafe is unavailable; nothing sent)
+--- security invocations:
+argv: find-generic-password -s fm-lab-typesafe -a someone-else -w
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== X3 declared item exists but holds an empty password =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-empty", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307180656-1793307180560 = 96 ms)
+--- stdout:
+dispatch-resolve:
+  status: error
+  reason: credential source macos-keychain declared for typesafe is unavailable; nothing sent
+--- stderr:
+dispatch-resolve: error (credential source macos-keychain declared for typesafe is unavailable; nothing sent)
+--- security invocations:
+argv: find-generic-password -s fm-lab-empty -a fm-lab -w
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== X4 macOS host but no security command on PATH -> unsupported here =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307180798-1793307180739 = 59 ms)
+--- stdout:
+dispatch-resolve:
+  status: error
+  reason: credential source macos-keychain declared for typesafe is not supported on this host; nothing sent
+--- stderr:
+dispatch-resolve: error (credential source macos-keychain declared for typesafe is not supported on this host; nothing sent)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== X5 host is not macOS (uname reports Linux) -> unsupported here; security never run =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307181297-1793307180878 = 419 ms)
+--- stdout:
+dispatch-resolve:
+  status: error
+  reason: credential source macos-keychain declared for typesafe is not supported on this host; nothing sent
+--- stderr:
+dispatch-resolve: error (credential source macos-keychain declared for typesafe is not supported on this host; nothing sent)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== X6 source never answers -> bounded at 5 s, the read is stopped, nothing sent =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307186856-1793307181381 = 5475 ms)
+--- stdout:
+dispatch-resolve:
+  status: error
+  reason: credential source macos-keychain declared for typesafe did not answer in time; nothing sent
+--- stderr:
+dispatch-resolve: error (credential source macos-keychain declared for typesafe did not answer in time; nothing sent)
+--- security invocations:
+argv(hanging stand-in, pid 63638): find-generic-password -s fm-lab-typesafe -a fm-lab -w
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+hang check: stand-in pid 63638 is gone (the bounded read was stopped)

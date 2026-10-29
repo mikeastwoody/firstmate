@@ -1,0 +1,325 @@
+# Live, head bcdebef5: an invalid or unreadable declaration is an actionable configuration error (exit 2, one line, never a declared value), with no Keychain, network, or quota call.
+# Every planted value contains SHOULD-NOT-PRINT; the 'marker check' line greps the resolver's output for it.
+
+===== V1 extra field carrying a credential value =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "key": "sk-SHOULD-NOT-PRINT"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307155811-1793307155733 = 78 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - typesafe has unknown field key (allowed: source, service, account); credential values do not belong in this file
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V2 unknown provider =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"openai": {"source": "macos-keychain", "service": "SHOULD-NOT-PRINT"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307155981-1793307155911 = 70 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - unknown provider openai (expected typesafe or openrouter)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V3 unknown source adapter =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "vault-SHOULD-NOT-PRINT", "service": "fm-lab-typesafe"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307156144-1793307156076 = 68 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - typesafe source must be one of macos-keychain
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V4 missing required service =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "account": "SHOULD-NOT-PRINT"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307156318-1793307156246 = 72 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - typesafe service must be a non-empty string without control characters
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V5 empty service =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": ""}}
+# .env: (absent)
+--- exit: 2   (wall 1793307156545-1793307156451 = 94 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - typesafe service must be a non-empty string without control characters
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V6 account with a control character =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "SHOULD-NOT-PRINT\u0007"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307156709-1793307156644 = 65 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - typesafe account must be a non-empty string without control characters when present
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V7 not JSON =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: typesafe = SHOULD-NOT-PRINT
+# .env: (absent)
+--- exit: 2   (wall 1793307156882-1793307156809 = 73 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - not JSON
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V8 top-level array =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: [{"typesafe": {"source": "macos-keychain", "service": "SHOULD-NOT-PRINT"}}]
+# .env: (absent)
+--- exit: 2   (wall 1793307157059-1793307156994 = 65 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - top-level value must be an object keyed by provider
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V9 two JSON objects =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe"}} {"openrouter": {"source": "macos-keychain", "service": "SHOULD-NOT-PRINT"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307157209-1793307157150 = 59 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - must hold exactly one JSON object
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V10 typesafe entry fine, openrouter entry invalid -> whole file rejected even though typesafe is selected =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe"}, "openrouter": {"source": "macos-keychain"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307157365-1793307157293 = 72 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - openrouter service must be a non-empty string without control characters
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V11 entry that is a bare string =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": "SHOULD-NOT-PRINT"}
+# .env: (absent)
+--- exit: 2   (wall 1793307161630-1793307157447 = 4183 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed credential source declaration: $LAB/home/config/dispatch-credential-sources.json - typesafe must be an object with a source
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+marker check: ok (no declared value printed)
+
+===== V12 unreadable declaration file (mode 000) =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+/Users/mike/.no-mistakes/evidence/01M64PBEHSJ6GP4SNJBS0Q9PSR/lab-harness/drive.sh: line 19: /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T//fm-credsrc-lab.r1zuMC/home/config/dispatch-credential-sources.json: Permission denied
+# $LAB/home/config/dispatch-credential-sources.json: 
+# .env: (absent)
+--- exit: 2   (wall 1793307161822-1793307161770 = 52 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: credential source declaration not readable: $LAB/home/config/dispatch-credential-sources.json
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== V13 dangling symlink as the declaration =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: (absent)
+# .env: (absent)
+--- exit: 2   (wall 1793307161965-1793307161918 = 47 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: credential source declaration not readable: $LAB/home/config/dispatch-credential-sources.json
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+

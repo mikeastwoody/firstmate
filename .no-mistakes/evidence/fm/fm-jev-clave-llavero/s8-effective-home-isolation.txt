@@ -1,0 +1,118 @@
+# Live, head bcdebef5: only the effective config directory's declaration is consulted (FM_CONFIG_OVERRIDE, else $FM_HOME/config).
+
+===== E1 FM_CONFIG_OVERRIDE points at a config dir with no declaration; $FM_HOME/config has a valid one -> off, the FM_HOME one is ignored =====
+$ FM_HOME=$LAB/home FM_CONFIG_OVERRIDE=$LAB/altconfig bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/altconfig/dispatch-credential-sources.json: (absent)
+# .env: (absent)
+--- exit: 0   (wall 1793307229471-1793307229428 = 43 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+# ($FM_HOME/config/dispatch-credential-sources.json at the time: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}})
+
+===== E2 FM_CONFIG_OVERRIDE declaration valid; $FM_HOME/config one INVALID -> the override's is used and the FM_HOME one is not even validated =====
+$ FM_HOME=$LAB/home FM_CONFIG_OVERRIDE=$LAB/altconfig bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/altconfig/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307229853-1793307229556 = 297 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 63   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+argv: find-generic-password -s fm-lab-typesafe -w
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.KGTlN2kD8m -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <ts-canary>","authorization_is":"ts-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+# ($FM_HOME/config/dispatch-credential-sources.json at the time: {"typesafe": {"source": "macos-keychain", "key": "SHOULD-NOT-PRINT"}})
+
+===== E3 another home declares a source; this home declares none -> off, the other home is never consulted =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: (absent)
+# .env: (absent)
+--- exit: 0   (wall 1793307229981-1793307229941 = 40 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== E4 the other home itself -> its own declaration resolves =====
+$ FM_HOME=$LAB/otherhome bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/otherhome/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307230343-1793307230055 = 288 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 61   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+argv: find-generic-password -s fm-lab-typesafe -a fm-lab -w
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.LRV4GdUqW3 -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <ts-canary>","authorization_is":"ts-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+

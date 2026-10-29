@@ -1,0 +1,48 @@
+# Live: unconfigured homes (no dispatch-credential-sources.json) behave exactly as on base b936f040 (git archive of bin/), head bcdebef5
+# Compared: exit code, stdout (latency_ms normalized), stderr, the stub's received request (path, which canary was the Bearer, model), and security/quota-axi calls.
+
+===== U1 no key anywhere -> off =====
+base exit=0 new exit=0
+out identical (0 line(s))
+err identical (1 line(s))
+req identical (0 line(s))
+calls identical (0 line(s))
+new stderr: dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment and $LAB/home/.env)
+new stub request(s): 
+
+===== U2 environment key =====
+base exit=0 new exit=0
+out identical (11 line(s))
+err identical (0 line(s))
+req identical (1 line(s))
+calls identical (1 line(s))
+new stderr: 
+new stub request(s): {"path":"/v1/systemone","authorization_is":"env-canary","body_model":"jev-latest"} 
+
+===== U3 .env key =====
+base exit=0 new exit=0
+out identical (11 line(s))
+err identical (0 line(s))
+req identical (1 line(s))
+calls identical (1 line(s))
+new stderr: 
+new stub request(s): {"path":"/v1/systemone","authorization_is":"dotenv-canary","body_model":"jev-latest"} 
+
+===== U4 openrouter selected without a key -> off =====
+base exit=0 new exit=0
+out identical (0 line(s))
+err identical (1 line(s))
+req identical (0 line(s))
+calls identical (0 line(s))
+new stderr: dispatch-resolve: off (OPENROUTER_API_KEY absent from the environment and $LAB/home/.env)
+new stub request(s): 
+
+===== U5 openrouter selected with environment key =====
+base exit=0 new exit=0
+out identical (11 line(s))
+err identical (0 line(s))
+req identical (1 line(s))
+calls identical (1 line(s))
+new stderr: 
+new stub request(s): {"path":"/alpha/decisions","authorization_is":"or-canary","body_model":"openai/gpt-5"} 
+

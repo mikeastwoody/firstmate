@@ -1,0 +1,170 @@
+# Live, head bcdebef5: each provider reads only its own declared entry; a declaration never selects a provider (same harness as s1)
+
+===== P1 only openrouter declared, no provider selected, no key -> typesafe stays off; the openrouter entry is not read and does not select openrouter =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"openrouter": {"source": "macos-keychain", "service": "fm-lab-openrouter", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307132302-1793307132221 = 81 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (TYPESAFE_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== P2 only typesafe declared, FM_DISPATCH_PROVIDER=openrouter, no openrouter key -> openrouter off; typesafe item not read =====
+$ FM_HOME=$LAB/home FM_DISPATCH_PROVIDER=openrouter FM_DISPATCH_MODEL=openai/gpt-5 bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307132464-1793307132401 = 63 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (OPENROUTER_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== P3 both declared, FM_DISPATCH_PROVIDER=openrouter -> reads only the openrouter item; Bearer is the openrouter canary =====
+$ FM_HOME=$LAB/home FM_DISPATCH_PROVIDER=openrouter FM_DISPATCH_MODEL=openai/gpt-5 bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}, "openrouter": {"source": "macos-keychain", "service": "fm-lab-openrouter", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307132936-1793307132568 = 368 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 76   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+argv: find-generic-password -s fm-lab-openrouter -a fm-lab -w
+--- curl invocations:
+argv: -sS --max-time 10 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.GNorPJJXxZ -w %\{http_code\} -X POST https://openrouter.ai/api/alpha/decisions -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/alpha/decisions","authorization":"Bearer <or-canary>","authorization_is":"or-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"openai/gpt-5"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== P4 both declared, default provider -> reads only the typesafe item =====
+$ FM_HOME=$LAB/home bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}, "openrouter": {"source": "macos-keychain", "service": "fm-lab-openrouter", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307133413-1793307133047 = 366 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 77   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+argv: find-generic-password -s fm-lab-typesafe -a fm-lab -w
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.h8SdLWzNR3 -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <ts-canary>","authorization_is":"ts-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== P5 both declared, FM_DISPATCH_PROVIDER=openai, no OPENAI_API_KEY -> openai off as today; no Keychain read =====
+$ FM_HOME=$LAB/home FM_DISPATCH_PROVIDER=openai FM_DISPATCH_MODEL=gpt-5 bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}, "openrouter": {"source": "macos-keychain", "service": "fm-lab-openrouter", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307133580-1793307133521 = 59 ms)
+--- stdout:
+(empty)
+--- stderr:
+dispatch-resolve: off (OPENAI_API_KEY absent from the environment and $LAB/home/.env)
+--- security invocations:
+(none)
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== P6 both declared, typesafe environment key -> environment key used; openrouter item untouched =====
+$ FM_HOME=$LAB/home TYPESAFE_API_KEY=<canary> bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/home/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}, "openrouter": {"source": "macos-keychain", "service": "fm-lab-openrouter", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307133990-1793307133686 = 304 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 81   tokens: 812/60
+  rule: rule_4 (A simple bug fix with a stated root cause.)   confidence: 0.96
+  probabilities: rule_1=0.01 rule_2=0.01 rule_3=0.01 rule_4=0.96 default=0.01
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (kimi)
+  candidate: claude:sonnet  provider=claude  scope=all_models  remaining=79%  spendPriority=-0.4627  runway=projected_exhaustion  -> eligible
+  candidate: cursor:cursor-grok-4.6-medium  provider=cursor  scope=all_models  remaining=91%  spendPriority=0.7597  runway=through_reset  -> eligible
+  candidate: kimi:kimi-code/k3  provider=kimi  -> eligible, unranked: provider kimi unmeasured (unknown): disclosed uncertainty
+  profile: --harness 'cursor' --model 'cursor-grok-4.6-medium'
+--- stderr:
+(empty)
+--- security invocations:
+(none)
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.QVMRoqQtj0 -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <env-canary>","authorization_is":"env-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+

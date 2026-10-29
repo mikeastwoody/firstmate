@@ -1,0 +1,55 @@
+# Live, head bcdebef5: resolver side of the parity check in the same lab home and the same declared-only typesafe source (stub answers rule_1).
+
+===== R1 resolver accepts the gemini profile bootstrap now accepts (B2) =====
+$ FM_HOME=$LAB/bhome bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/bhome/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 0   (wall 1793307339798-1793307339460 = 338 ms)
+--- stdout:
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 91   tokens: 100/10
+  rule: rule_1 (gemini work)   confidence: 0.9
+  probabilities: rule_1=0.9 default=0.1
+  note: rule matched
+  candidate: gemini:gemini-3.8-flash-high  provider=google  scope=all_models  remaining=72%  spendPriority=0.3  runway=through_reset  -> eligible
+  profile: --harness 'gemini' --model 'gemini-3.8-flash-high'
+--- stderr:
+(empty)
+--- security invocations:
+argv: find-generic-password -s fm-lab-typesafe -a fm-lab -w
+--- curl invocations:
+argv: -sS --max-time 5 -o /var/folders/t1/hn73dcyn0mg70rx5np1f41_80000gn/T/tmp.zRIbkoFPg6 -w %\{http_code\} -X POST https://api.typesafe.ai/v1/systemone -H Content-Type:\ application/json -H @/dev/fd/3 --data-binary @-
+--- quota-axi invocations:
+quota-axi --json
+--- requests received by the local stub endpoint:
+{"path":"/v1/systemone","authorization":"Bearer <ts-canary>","authorization_is":"ts-canary","body_has_any_key":false,"key_in_resolver_files_in_flight":[],"files_scanned_in_flight":5,"body_model":"jev-latest"}
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
+===== R2 resolver rejects approval "Captain" (exit 2), which bootstrap now flags too (B3) =====
+$ FM_HOME=$LAB/bhome bin/fm-dispatch-resolve.sh $LAB/fixtures/brief.md --project pager 
+# $LAB/bhome/config/dispatch-credential-sources.json: {"typesafe": {"source": "macos-keychain", "service": "fm-lab-typesafe", "account": "fm-lab"}}
+# .env: (absent)
+--- exit: 2   (wall 1793307340039-1793307339895 = 144 ms)
+--- stdout:
+(empty)
+--- stderr:
+error: malformed rules file: $LAB/bhome/config/crew-dispatch.json - approval must be "captain" when present
+--- security invocations:
+argv: find-generic-password -s fm-lab-typesafe -a fm-lab -w
+--- curl invocations:
+(none)
+--- quota-axi invocations:
+(none)
+--- requests received by the local stub endpoint:
+(none)
+--- key containment:
+ok: dotenv-canary not in resolver stdout/stderr
+ok: env-canary not in resolver stdout/stderr
+ok: or-canary not in resolver stdout/stderr
+ok: ts-canary not in resolver stdout/stderr
+
