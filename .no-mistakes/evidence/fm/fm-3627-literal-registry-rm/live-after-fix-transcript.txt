@@ -1,0 +1,91 @@
+bin=/Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin (commit 6769d26a)
+TMUX socket: /private/tmp/fml.jRhpEf/tmux-501/fm-lab
+$ env FM_SECONDMATE_CHARTER=Lab sibling domain abc. FM_SECONDMATE_SCOPE=scope two <bin>/fm-home-seed.sh abc <subs>/abc --no-projects
+scaffolded: <lab>/data/abc/brief.md (secondmate charter)
+home=<subs>/abc
+exit=0
+$ env FM_SECONDMATE_CHARTER=Lab sibling domain axc. FM_SECONDMATE_SCOPE=scope three <bin>/fm-home-seed.sh axc <subs>/axc --no-projects
+scaffolded: <lab>/data/axc/brief.md (secondmate charter)
+home=<subs>/axc
+exit=0
+$ env FM_SECONDMATE_CHARTER=Lab longer domain a.cd. FM_SECONDMATE_SCOPE=scope four <bin>/fm-home-seed.sh a.cd <subs>/a.cd --no-projects
+scaffolded: <lab>/data/a.cd/brief.md (secondmate charter)
+home=<subs>/a.cd
+exit=0
+
+=== registry before seeding a.c (siblings abc, axc collide with regex a.c)
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+
+$ env FM_SECONDMATE_CHARTER=Lab dotted domain a.c. FM_SECONDMATE_SCOPE=dotted scope <bin>/fm-home-seed.sh a.c <subs>/a.c --no-projects
+scaffolded: <lab>/data/a.c/brief.md (secondmate charter)
+home=<subs>/a.c
+exit=0
+
+=== registry after seeding a.c
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+$ <bin>/fm-home-seed.sh a.c <subs>/a.c --no-projects
+home=<subs>/a.c
+exit=0
+
+=== registry after RE-seeding a.c
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+$ <bin>/fm-home-seed.sh validate
+exit=0
+$ <bin>/fm-spawn.sh a.c <subs>/a.c --harness sleep 3600 --secondmate
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <lab>
+warning: secondmate a.c sync skipped before launch: primary default-branch commit cannot be resolved
+can't find pane: c
+exit=1
+$ tmux list-windows -a
+primary:bash
+primary:fm-a.c
+$ <bin>/fm-teardown.sh a.c
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <lab>
+error: teardown refused: task record is not a regular file at <lab>/state/a.c.meta
+exit=1
+
+=== registry after tearing down a.c
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+$ ls <subs>
+a.c
+a.cd
+abc
+axc
+$ tmux list-windows -a
+primary:bash
+primary:fm-a.c
+$ <bin>/fm-home-seed.sh validate
+exit=0
+
+=== remote seed of dotted id a.c to an unresolvable SSH host (real ssh; exit 255 keeps the route)
+$ env FM_SECONDMATE_CHARTER=Lab remote dotted domain a.c. FM_SECONDMATE_SCOPE=remote dotted scope <bin>/fm-remote-home-seed.sh a.c fm-lab-unreachable.invalid /srv/fm-root /srv/fm-home --no-projects
+error: secondmate a.c is already registered to a different local or remote home
+exit=1
+
+=== registry after remote-seeding a.c
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+DRIVER-DONE
+EXIT=0

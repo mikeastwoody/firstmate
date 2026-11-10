@@ -1,0 +1,9 @@
+### same tests against the base commit scripts (913bb7a7) - each run separately so one failure does not hide the rest
+tests/.one.test.sh: line 1460: secondmate_registry_lines_without_id: command not found
+not ok - literal registry rewrite failed
+ok - FM_HOME parameterizes data and state paths
+not ok - seeding a.c deleted the colliding abc route
+ok - FM_HOME parameterizes data and state paths
+not ok - remote seeding r.c deleted the colliding rbc route
+ok - FM_HOME parameterizes data and state paths
+not ok - dotted teardown of a.c deleted the colliding abc route

@@ -1,0 +1,64 @@
+=== [base] bin: $WORK/base/bin ; FM_HOME=lab home ; tmux: lab private socket ===
+--- lab tmux windows BEFORE ---
+firstmate:fm-a.c
+--- registry BEFORE teardown ---
+- a.c - dotted domain (home: $WORK/base-td-subhome-a.c; scope: dotted domain; projects: alpha; added 2026-06-22)
+- abc - sibling domain (home: $WORK/base-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB fm-teardown.sh a.c
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+error: tmux window firstmate:fm-a.c is still present after its close
+error: the tmux endpoint firstmate:fm-a.c for a.c could not be closed, so it may still be live.
+error: stopping this cleanup without removing the task's records, so the record naming firstmate:fm-a.c is still here to reconcile from.
+error: that retention is not durable across a session start: if this task carries a backlog transition, the next session replays its pending close and removes the retained record, so reconcile the surviving endpoint yourself rather than trusting the retention.
+error: rerun teardown once the close can succeed, or rerun with --force to discard this task's records deliberately.
+exit=1
+--- registry AFTER teardown ---
+- a.c - dotted domain (home: $WORK/base-td-subhome-a.c; scope: dotted domain; projects: alpha; added 2026-06-22)
+- abc - sibling domain (home: $WORK/base-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+--- checks ---
+abc sibling route: KEPT
+a.c route count: 1
+a.c meta: PRESENT
+a.c home: PRESENT
+--- lab tmux windows AFTER ---
+firstmate:fm-a.c
+
+=== [fix] bin: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin ; FM_HOME=lab home ; tmux: lab private socket ===
+--- lab tmux windows BEFORE ---
+firstmate:fm-a.c
+--- registry BEFORE teardown ---
+- a.c - dotted domain (home: $WORK/fix-td-subhome-a.c; scope: dotted domain; projects: alpha; added 2026-06-22)
+- abc - sibling domain (home: $WORK/fix-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB fm-teardown.sh a.c
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+error: tmux window firstmate:fm-a.c is still present after its close
+error: the tmux endpoint firstmate:fm-a.c for a.c could not be closed, so it may still be live.
+error: stopping this cleanup without removing the task's records, so the record naming firstmate:fm-a.c is still here to reconcile from.
+error: that retention is not durable across a session start: if this task carries a backlog transition, the next session replays its pending close and removes the retained record, so reconcile the surviving endpoint yourself rather than trusting the retention.
+error: rerun teardown once the close can succeed, or rerun with --force to discard this task's records deliberately.
+exit=1
+--- registry AFTER teardown ---
+- a.c - dotted domain (home: $WORK/fix-td-subhome-a.c; scope: dotted domain; projects: alpha; added 2026-06-22)
+- abc - sibling domain (home: $WORK/fix-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+--- checks ---
+abc sibling route: KEPT
+a.c route count: 1
+a.c meta: PRESENT
+a.c home: PRESENT
+--- lab tmux windows AFTER ---
+firstmate:fm-a.c
+
+=== direct check on a lab private tmux server ===
+$ tmux new-window -n fm-a.c
+main
+fm-a.c
+$ tmux kill-window -t firstmate:fm-a.c
+can't find pane: c
+exit=1
+windows after:
+main
+fm-a.c

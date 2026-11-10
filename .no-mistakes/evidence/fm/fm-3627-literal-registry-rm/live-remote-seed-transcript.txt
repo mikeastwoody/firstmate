@@ -1,0 +1,16 @@
+bin=/Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin (commit 6769d26a)
+=== registry before remote seed
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+
+$ FM_SECONDMATE_CHARTER=... bin/fm-remote-home-seed.sh a.c fm-lab-unreachable.invalid /srv/fm-root /srv/fm-home --no-projects
+ssh: Could not resolve hostname fm-lab-unreachable.invalid: nodename nor servname provided, or not known
+error: remote readiness completion is unknown; route and brief preserved for same-host reconciliation
+exit=1
+
+=== registry after remote seed (ssh exit 255 => route kept, siblings must survive)
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab remote dotted domain a.c. (host: fm-lab-unreachable.invalid; root: /srv/fm-root; home: /srv/fm-home; scope: remote dotted scope; projects: ; added 2026-11-10)

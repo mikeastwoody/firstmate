@@ -1,0 +1,14 @@
+### target commit 6769d26a (fix): the commit's four new tests, run on their own
+ok - registry rewrite removes only the literal id's routes
+ok - home seeding a dotted id keeps a colliding sibling route
+ok - remote home seeding a dotted id keeps a colliding sibling route
+ok - secondmate teardown of a dotted id keeps a colliding sibling route
+exit=0
+
+### base commit 913bb7a7 scripts + the same new test bodies (regression proof; the lib-level test is omitted because base has no secondmate_registry_lines_without_id)
+not ok - seeding a.c deleted the colliding abc route
+not ok - remote seeding r.c deleted the colliding rbc route
+not ok - dotted teardown of a.c deleted the colliding abc route
+test_home_seed_dotted_id_keeps_colliding_registry_sibling exit=1
+test_remote_home_seed_dotted_id_keeps_colliding_registry_sibling exit=1
+test_secondmate_teardown_dotted_id_keeps_colliding_registry_sibling exit=1

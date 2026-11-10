@@ -1,0 +1,19 @@
+remove abc    old_lines=9   new_lines=9   byte-identical to old grep
+remove a.c    old_lines=8   new_lines=10  DIFFERS from old grep
+remove a-b_c  old_lines=10  new_lines=10  byte-identical to old grep
+remove a.cd   old_lines=10  new_lines=10  byte-identical to old grep
+remove zzz    old_lines=10  new_lines=10  byte-identical to old grep
+--- remove a.c: lines the OLD regex dropped that the new literal compare keeps ---
+  kept now: - abc - plain (home: /h/abc; scope: s; projects: ; added 2026-06-22)
+  kept now: - abc
+--- remove a.c: new output ---
+# Secondmates$
+$
+- abc - plain (home: /h/abc; scope: s; projects: ; added 2026-06-22)$
+- a-b_c - dashes (home: /h/a-b_c; scope: s; projects: ; added 2026-06-22)$
+- a.cd - prefix (home: /h/a.cd; scope: s; projects: ; added 2026-06-22)$
+- abc$
+  - abc indented (kept by both)$
+- abc^Itab-separated (kept by both: not "- abc " )$
+note with backslashes \\n \t and trailing spaces   $
+- zzz - unterminated last line (home: /h/zzz; scope: s; projects: ; added 2026-06-22)$

@@ -1,0 +1,7 @@
+### new regression tests against the fix (6769d26a)
+ok - FM_HOME parameterizes data and state paths
+ok - registry rewrite removes only the literal id's routes
+ok - home seeding a dotted id keeps a colliding sibling route
+ok - remote home seeding a dotted id keeps a colliding sibling route
+ok - secondmate teardown of a dotted id keeps a colliding sibling route
+exit=0

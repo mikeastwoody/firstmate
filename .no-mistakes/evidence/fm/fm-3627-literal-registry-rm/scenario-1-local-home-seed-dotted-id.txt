@@ -1,0 +1,41 @@
+=== [base] bin: $WORK/base/bin ; FM_HOME=lab home ===
+--- registry BEFORE seeding a.c ---
+- abc - sibling domain (home: $WORK/base-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB FM_SECONDMATE_CHARTER=... FM_SECONDMATE_SCOPE='dotted scope' fm-home-seed.sh a.c $SUB --no-projects
+scaffolded: $LAB/data/a.c/brief.md (secondmate charter)
+home=$WORK/base-subhome-a.c
+exit=0
+--- registry AFTER first seed ---
+- a.c - Dotted id charter. (home: $WORK/base-subhome-a.c; scope: dotted scope; projects: ; added 2026-11-10)
+$ FM_HOME=$LAB fm-home-seed.sh a.c $SUB --no-projects   # reseed same id
+home=$WORK/base-subhome-a.c
+exit=0
+--- registry AFTER reseed ---
+- a.c - Dotted id charter. (home: $WORK/base-subhome-a.c; scope: dotted scope; projects: ; added 2026-11-10)
+--- checks ---
+abc sibling route: DELETED
+a.c route count: 1
+$ FM_HOME=$LAB fm-home-seed.sh validate
+validate exit=0
+
+=== [fix] bin: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin ; FM_HOME=lab home ===
+--- registry BEFORE seeding a.c ---
+- abc - sibling domain (home: $WORK/fix-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB FM_SECONDMATE_CHARTER=... FM_SECONDMATE_SCOPE='dotted scope' fm-home-seed.sh a.c $SUB --no-projects
+scaffolded: $LAB/data/a.c/brief.md (secondmate charter)
+home=$WORK/fix-subhome-a.c
+exit=0
+--- registry AFTER first seed ---
+- abc - sibling domain (home: $WORK/fix-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+- a.c - Dotted id charter. (home: $WORK/fix-subhome-a.c; scope: dotted scope; projects: ; added 2026-11-10)
+$ FM_HOME=$LAB fm-home-seed.sh a.c $SUB --no-projects   # reseed same id
+home=$WORK/fix-subhome-a.c
+exit=0
+--- registry AFTER reseed ---
+- abc - sibling domain (home: $WORK/fix-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+- a.c - Dotted id charter. (home: $WORK/fix-subhome-a.c; scope: dotted scope; projects: ; added 2026-11-10)
+--- checks ---
+abc sibling route: KEPT
+a.c route count: 1
+$ FM_HOME=$LAB fm-home-seed.sh validate
+validate exit=0

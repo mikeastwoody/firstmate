@@ -1,0 +1,47 @@
+=== [base] bin: $WORK/base/bin ; FM_HOME=lab home ; SSH host unreachable (exit 255) ===
+--- registry BEFORE ---
+- rbc - regex sibling (home: $WORK/base-rsib-rbc; scope: scope two; projects: ; added 2026-06-22)
+- r.cd - prefix sibling (home: $WORK/base-rsib-r.cd; scope: scope three; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB FM_SSH_BIN=<unreachable> fm-remote-home-seed.sh r.c dotted-host /srv/fm-root /srv/fm-home --no-projects   # first
+ssh: connect to host dotted-host port 22: Connection refused
+error: remote readiness completion is unknown; route and brief preserved for same-host reconciliation
+exit=1
+--- registry AFTER first ---
+- r.cd - prefix sibling (home: $WORK/base-rsib-r.cd; scope: scope three; projects: ; added 2026-06-22)
+- r.c - Dotted remote charter. (host: dotted-host; root: /srv/fm-root; home: /srv/fm-home; scope: dotted remote scope; projects: ; added 2026-11-10)
+$ FM_HOME=$LAB FM_SSH_BIN=<unreachable> fm-remote-home-seed.sh r.c dotted-host /srv/fm-root /srv/fm-home --no-projects   # rerun
+ssh: connect to host dotted-host port 22: Connection refused
+error: remote readiness completion is unknown; route and brief preserved for same-host reconciliation
+exit=1
+--- registry AFTER rerun ---
+- r.cd - prefix sibling (home: $WORK/base-rsib-r.cd; scope: scope three; projects: ; added 2026-06-22)
+- r.c - Dotted remote charter. (host: dotted-host; root: /srv/fm-root; home: /srv/fm-home; scope: dotted remote scope; projects: ; added 2026-11-10)
+--- checks ---
+'rbc - regex sibling' route: DELETED
+'r.cd - prefix sibling' route: KEPT
+r.c route count: 1
+
+=== [fix] bin: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin ; FM_HOME=lab home ; SSH host unreachable (exit 255) ===
+--- registry BEFORE ---
+- rbc - regex sibling (home: $WORK/fix-rsib-rbc; scope: scope two; projects: ; added 2026-06-22)
+- r.cd - prefix sibling (home: $WORK/fix-rsib-r.cd; scope: scope three; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB FM_SSH_BIN=<unreachable> fm-remote-home-seed.sh r.c dotted-host /srv/fm-root /srv/fm-home --no-projects   # first
+ssh: connect to host dotted-host port 22: Connection refused
+error: remote readiness completion is unknown; route and brief preserved for same-host reconciliation
+exit=1
+--- registry AFTER first ---
+- rbc - regex sibling (home: $WORK/fix-rsib-rbc; scope: scope two; projects: ; added 2026-06-22)
+- r.cd - prefix sibling (home: $WORK/fix-rsib-r.cd; scope: scope three; projects: ; added 2026-06-22)
+- r.c - Dotted remote charter. (host: dotted-host; root: /srv/fm-root; home: /srv/fm-home; scope: dotted remote scope; projects: ; added 2026-11-10)
+$ FM_HOME=$LAB FM_SSH_BIN=<unreachable> fm-remote-home-seed.sh r.c dotted-host /srv/fm-root /srv/fm-home --no-projects   # rerun
+ssh: connect to host dotted-host port 22: Connection refused
+error: remote readiness completion is unknown; route and brief preserved for same-host reconciliation
+exit=1
+--- registry AFTER rerun ---
+- rbc - regex sibling (home: $WORK/fix-rsib-rbc; scope: scope two; projects: ; added 2026-06-22)
+- r.cd - prefix sibling (home: $WORK/fix-rsib-r.cd; scope: scope three; projects: ; added 2026-06-22)
+- r.c - Dotted remote charter. (host: dotted-host; root: /srv/fm-root; home: /srv/fm-home; scope: dotted remote scope; projects: ; added 2026-11-10)
+--- checks ---
+'rbc - regex sibling' route: KEPT
+'r.cd - prefix sibling' route: KEPT
+r.c route count: 1

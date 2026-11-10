@@ -1,0 +1,42 @@
+bin=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-scr.OoVcJf/base/bin (export of base commit 913bb7a7)
+TMUX socket: (none)
+$ env FM_SECONDMATE_CHARTER=Lab sibling domain abc. FM_SECONDMATE_SCOPE=scope two <bin>/fm-home-seed.sh abc <subs>/abc --no-projects
+scaffolded: <lab>/data/abc/brief.md (secondmate charter)
+home=<subs>/abc
+exit=0
+$ env FM_SECONDMATE_CHARTER=Lab sibling domain axc. FM_SECONDMATE_SCOPE=scope three <bin>/fm-home-seed.sh axc <subs>/axc --no-projects
+scaffolded: <lab>/data/axc/brief.md (secondmate charter)
+home=<subs>/axc
+exit=0
+$ env FM_SECONDMATE_CHARTER=Lab longer domain a.cd. FM_SECONDMATE_SCOPE=scope four <bin>/fm-home-seed.sh a.cd <subs>/a.cd --no-projects
+scaffolded: <lab>/data/a.cd/brief.md (secondmate charter)
+home=<subs>/a.cd
+exit=0
+
+=== registry before seeding a.c (siblings abc, axc collide with regex a.c)
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+
+$ env FM_SECONDMATE_CHARTER=Lab dotted domain a.c. FM_SECONDMATE_SCOPE=dotted scope <bin>/fm-home-seed.sh a.c <subs>/a.c --no-projects
+scaffolded: <lab>/data/a.c/brief.md (secondmate charter)
+home=<subs>/a.c
+exit=0
+
+=== registry after seeding a.c
+$ cat $FM_HOME/data/secondmates.md
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+$ <bin>/fm-home-seed.sh a.c <subs>/a.c --no-projects
+home=<subs>/a.c
+exit=0
+
+=== registry after RE-seeding a.c
+$ cat $FM_HOME/data/secondmates.md
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+$ <bin>/fm-home-seed.sh validate
+exit=0

@@ -1,0 +1,32 @@
+=== [base] bin: $WORK/base/bin ; FM_HOME=lab home ; remote host shim: retire succeeds ===
+--- registry BEFORE teardown ---
+- r.c - dotted remote (host: dotted-host; root: /srv/fm-root; home: /srv/fm-home; scope: dotted remote scope; projects: ; added 2026-06-22)
+- rbc - sibling domain (home: $WORK/base-rtd-sibling-rbc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB FM_SSH_BIN=<ok-shim> fm-teardown.sh r.c
+fm-gate-refuse: gate agent lifecycle permitted only against lab home $LAB
+teardown r.c complete (remote dotted-host:/srv/fm-home)
+exit=0
+--- registry AFTER teardown ---
+--- checks ---
+rbc sibling route: DELETED
+r.c route count: 0
+r.c meta: REMOVED
+--- ssh calls made by teardown ---
+  ssh -o ForwardAgent=no -o ClearAllForwardings=yes -o SendEnv=-* -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -- dotted-host fm-remote-entrypoint.sh 1 L3
+
+=== [fix] bin: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin ; FM_HOME=lab home ; remote host shim: retire succeeds ===
+--- registry BEFORE teardown ---
+- r.c - dotted remote (host: dotted-host; root: /srv/fm-root; home: /srv/fm-home; scope: dotted remote scope; projects: ; added 2026-06-22)
+- rbc - sibling domain (home: $WORK/fix-rtd-sibling-rbc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB FM_SSH_BIN=<ok-shim> fm-teardown.sh r.c
+fm-gate-refuse: gate agent lifecycle permitted only against lab home $LAB
+teardown r.c complete (remote dotted-host:/srv/fm-home)
+exit=0
+--- registry AFTER teardown ---
+- rbc - sibling domain (home: $WORK/fix-rtd-sibling-rbc; scope: scope two; projects: ; added 2026-06-22)
+--- checks ---
+rbc sibling route: KEPT
+r.c route count: 0
+r.c meta: REMOVED
+--- ssh calls made by teardown ---
+  ssh -o ForwardAgent=no -o ClearAllForwardings=yes -o SendEnv=-* -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -- dotted-host fm-remote-entrypoint.sh 1 L3

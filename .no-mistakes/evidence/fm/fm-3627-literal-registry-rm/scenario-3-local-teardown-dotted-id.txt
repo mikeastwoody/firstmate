@@ -1,0 +1,50 @@
+=== [base] bin: $WORK/base/bin ; FM_HOME=lab home ; tmux: lab private socket ===
+--- lab tmux windows BEFORE ---
+firstmate:main
+--- registry BEFORE teardown ---
+- a.c - dotted domain (home: $WORK/base-td-subhome-a.c; scope: dotted domain; projects: alpha; added 2026-06-22)
+- abc - sibling domain (home: $WORK/base-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB fm-teardown.sh a.c
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+teardown a.c complete (window firstmate:fm-a.c, worktree $WORK/base-td-subhome-a.c)
+exit=0
+--- registry AFTER teardown ---
+--- checks ---
+abc sibling route: DELETED
+a.c route count: 0
+a.c meta: REMOVED
+a.c home: REMOVED
+--- lab tmux windows AFTER ---
+firstmate:main
+
+=== [fix] bin: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin ; FM_HOME=lab home ; tmux: lab private socket ===
+--- lab tmux windows BEFORE ---
+firstmate:main
+--- registry BEFORE teardown ---
+- a.c - dotted domain (home: $WORK/fix-td-subhome-a.c; scope: dotted domain; projects: alpha; added 2026-06-22)
+- abc - sibling domain (home: $WORK/fix-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+$ FM_HOME=$LAB fm-teardown.sh a.c
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+teardown a.c complete (window firstmate:fm-a.c, worktree $WORK/fix-td-subhome-a.c)
+exit=0
+--- registry AFTER teardown ---
+- abc - sibling domain (home: $WORK/fix-td-sibling-abc; scope: scope two; projects: ; added 2026-06-22)
+--- checks ---
+abc sibling route: KEPT
+a.c route count: 0
+a.c meta: REMOVED
+a.c home: REMOVED
+--- lab tmux windows AFTER ---
+firstmate:main

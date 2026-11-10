@@ -1,0 +1,44 @@
+bin=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-scr.OoVcJf/base/bin (export of base commit 913bb7a7)  herdr session=fm-lab-dotreg-92892-21706
+
+=== registry before spawn
+$ cat $FM_HOME/data/secondmates.md
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope abc; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope axc; projects: ; added 2026-11-10)
+
+$ <bin>/fm-spawn.sh a.c <subs>/a.c --harness sleep 3600 --secondmate
+spawned a.c harness=sleep kind=secondmate mode=secondmate yolo=off window=fm-lab-dotreg-92892-21706:w2:p2 worktree=<subs>/a.c
+exit=0
+$ grep -E '^(window|kind|home|harness)=' state/a.c.meta
+window=fm-lab-dotreg-92892-21706:w2:p2
+harness=sleep
+kind=secondmate
+backend=herdr
+home=<subs>/a.c
+$ herdr pane list (lab)
+w2:p2  <subs>/a.c
+$ <bin>/fm-teardown.sh a.c
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+teardown a.c complete (window fm-lab-dotreg-92892-21706:w2:p2, worktree <subs>/a.c)
+exit=0
+
+=== registry after tearing down a.c
+$ cat $FM_HOME/data/secondmates.md
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+
+$ ls <subs>
+a.cd
+abc
+axc
+$ ls state/a.c.meta
+ls: <lab>/state/a.c.meta: No such file or directory
+$ <bin>/fm-home-seed.sh validate
+exit=0
+DRIVER-DONE

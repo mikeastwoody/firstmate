@@ -1,0 +1,49 @@
+bin=/Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M7301JYJ7BTV8585QTHGX56D/bin (commit 6769d26a)  herdr session=fm-lab-dotreg-92892-21706
+
+=== registry before spawn
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+- a.c - Lab dotted domain a.c. (home: <subs>/a.c; scope: dotted scope; projects: ; added 2026-11-10)
+
+$ <bin>/fm-spawn.sh a.c <subs>/a.c --harness sleep 3600 --secondmate
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <lab>
+warning: secondmate a.c sync skipped before launch: primary default-branch commit cannot be resolved
+spawned a.c harness=sleep kind=secondmate mode=secondmate yolo=off window=fm-lab-dotreg-92892-21706:w1:p2 worktree=<subs>/a.c
+exit=0
+$ grep -E '^(window|kind|home|harness)=' state/a.c.meta
+window=fm-lab-dotreg-92892-21706:w1:p2
+harness=sleep
+kind=secondmate
+backend=herdr
+home=<subs>/a.c
+$ herdr pane list (lab)
+w1:p2  <subs>/a.c
+$ <bin>/fm-teardown.sh a.c
+fm-gate-refuse: gate agent lifecycle permitted only against lab home <lab>
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+teardown a.c complete (window fm-lab-dotreg-92892-21706:w1:p2, worktree <subs>/a.c)
+exit=0
+
+=== registry after tearing down a.c
+$ cat $FM_HOME/data/secondmates.md
+- abc - Lab sibling domain abc. (home: <subs>/abc; scope: scope two; projects: ; added 2026-11-10)
+- axc - Lab sibling domain axc. (home: <subs>/axc; scope: scope three; projects: ; added 2026-11-10)
+- a.cd - Lab longer domain a.cd. (home: <subs>/a.cd; scope: scope four; projects: ; added 2026-11-10)
+
+$ ls <subs>
+a.cd
+abc
+axc
+$ ls state/a.c.meta
+ls: <lab>/state/a.c.meta: No such file or directory
+$ <bin>/fm-home-seed.sh validate
+exit=0
+DRIVER-DONE
