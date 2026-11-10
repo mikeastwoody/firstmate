@@ -1,0 +1,115 @@
+
+==== S1: done claim whose head reached ONLY the local no-mistakes gate mirror ====
+named head: 1e492c87d79e74b90487cf0d7f5bff19716d4d8f
+refs holding it outside the copy:
+  refs/remotes/no-mistakes/fm/task-a
+origin holds it? 0 branches
+
+==== S1a (before, base 913bb7a7b6e68a107c2d0ee755ee29c6f9e7b208): crew-state and registration through the OLD gate ====
+$ bash /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG/base/bin/fm-crew-state.sh task-a
+state: done · source: status-log · PR https://gitlab.example.test/g/demo/-/merge_requests/1 checks green
+[exit 0]
+$ bash /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG/base/bin/fm-pr-check.sh task-a https://gitlab.example.test/g/demo/-/merge_requests/1
+armed: state/task-a.check.sh
+[exit 0]
+meta pr= after OLD registration: pr=https://gitlab.example.test/g/demo/-/merge_requests/1
+(task-a meta restored for the new-code run)
+
+==== S1b (after): crew-state read of the same done claim ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-crew-state.sh task-a
+state: blocked · source: status-log · named head 1e492c87d79e74b90487cf0d7f5bff19716d4d8f is unreachable outside the worker copy
+[exit 0]
+
+==== S1c (after): registration (bin/fm-pr-check.sh) of the same done claim ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-pr-check.sh task-a https://gitlab.example.test/g/demo/-/merge_requests/1
+error: named head 1e492c87d79e74b90487cf0d7f5bff19716d4d8f is unreachable outside the worker copy
+[exit 1]
+meta pr= after NEW registration: (none)
+refresh ran (origin-sentinel fetched)? yes
+gate fetched (gate-only-sentinel present)? no
+glab calls: 0
+
+==== S1d (after): merge-time re-record through bin/fm-pr-merge.sh ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-pr-merge.sh task-a https://gitlab.example.test/g/demo/-/merge_requests/1
+error: named head 1e492c87d79e74b90487cf0d7f5bff19716d4d8f is unreachable outside the worker copy
+[exit 1]
+meta pr= after merge attempt: (none)
+glab calls (a refused record makes none): 0
+
+==== S2: same task once the worker pushes the head to origin itself ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-crew-state.sh task-a
+state: done · source: status-log · PR https://gitlab.example.test/g/demo/-/merge_requests/1 checks green
+[exit 0]
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-pr-check.sh task-a https://gitlab.example.test/g/demo/-/merge_requests/1
+armed: state/task-a.check.sh
+[exit 0]
+meta pr= : pr=https://gitlab.example.test/g/demo/-/merge_requests/1
+
+==== S3: GitLab no-mistakes task: pipeline pushes origin from its own gate clone; copy never fetched ====
+named head: 9d5c154391499380c1d871d8d4d918be5fa8b0cd; origin holds it: 9d5c154391499380c1d871d8d4d918be5fa8b0cd
+copy tracks origin/fm/task-b before registration? no
+
+==== S3a: crew-state before registration (read never fetches) ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-crew-state.sh task-b
+state: blocked · source: status-log · named head 9d5c154391499380c1d871d8d4d918be5fa8b0cd is unreachable outside the worker copy
+[exit 0]
+
+==== S3b: registration refreshes non-gate remotes, then accepts ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-pr-check.sh task-b https://gitlab.example.test/g/demo/-/merge_requests/2
+armed: state/task-b.check.sh
+[exit 0]
+meta pr= : pr=https://gitlab.example.test/g/demo/-/merge_requests/2
+copy tracks origin/fm/task-b after registration? 9d5c154391499380c1d871d8d4d918be5fa8b0cd
+
+==== S3c: crew-state after registration sees the fetched head ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-crew-state.sh task-b
+state: done · source: status-log · PR https://gitlab.example.test/g/demo/-/merge_requests/2 checks green
+[exit 0]
+
+==== S4: merge-time re-record (bin/fm-pr-merge.sh) of a GitLab task origin holds through the gate clone ====
+copy tracks origin/fm/task-c before merge? no
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-pr-merge.sh task-c https://gitlab.example.test/g/demo/-/merge_requests/3
+armed: state/task-c.check.sh
+error: could not read the GitLab merge request state before merging
+[exit 1]
+meta pr= after merge attempt: pr=https://gitlab.example.test/g/demo/-/merge_requests/3
+copy tracks origin/fm/task-c after merge? db53f451589cb1571b300744e95b25710329fa9e
+glab calls after record (the merge proceeded to the forge, which the lab shim fails):
+  glab mr view 3 -R https://gitlab.example.test/g/demo -F json
+
+==== S5: teardown refuses a gate-mirror-only head, and does not count the gate after its refresh ====
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-teardown.sh task-d
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG
+REFUSED: worktree /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG/worktrees/task-d has work not on any remote and not landed.
+unpushed commits:
+fc35a19 work d
+Push the branch, land its PR, or get the captain's explicit OK to discard, then --force.
+[exit 1]
+worktree still present? yes
+
+==== S5b: teardown of a task whose head origin holds via the gate clone (copy never fetched) ====
+copy tracks origin/fm/task-e before teardown? no
+$ /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M738X46X6BZH4228KWXXSWWT/bin/fm-teardown.sh task-e
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG
+teardown: reaping leaked worktree process(es) for task-e: 51846
+teardown: force-killing leaked worktree process(es) for task-e: 51846
+demo: already current
+teardown task-e complete (window fm:fm-task-e, worktree /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG/worktrees/task-e)
+Backlog: task-e just finished (this home keeps no markdown backlog at /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG/data/backlog.md). Update /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG/data/backlog.md - move task-e to Done, keep Done to the 10 most recent, then re-scan Queued and dispatch only work whose blockers are gone and date is due.
+[exit 0]
+worktree still present? yes
+gate-only-sentinel ever fetched? no
+
+==== S6: watcher scan behind a remote that hangs (real git:// listener that never answers) ====
+task-f head 7f42703a66726216ba95053f4dfee77048a24a0a and task-g head 7ba7a32ff398d938187b034f73e0d04e4bc43a03 exist only in their copies; remote slow=git://127.0.0.1:53967 hangs
+-- sweep 1 (FM_CHECK_TIMEOUT=16, as bin/fm-watch.sh runs it with config/pr-register-scan on)
+$ fm-pr-check.sh scan
+task-f reported https://gitlab.example.test/g/demo/-/merge_requests/6 in a done line, but it was not recorded: named head 7f42703a66726216ba95053f4dfee77048a24a0a is unreachable outside the worker copy; could not refresh remote: slow, so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+[exit 0, 6s]  cursor=task-f  refused-markers: task-f.pr-register-refused 
+-- sweep 2 (FM_CHECK_TIMEOUT=16, as bin/fm-watch.sh runs it with config/pr-register-scan on)
+$ fm-pr-check.sh scan
+task-g reported https://gitlab.example.test/g/demo/-/merge_requests/7 in a done line, but it was not recorded: named head 7ba7a32ff398d938187b034f73e0d04e4bc43a03 is unreachable outside the worker copy; could not refresh remote: slow, so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+[exit 0, 6s]  cursor=task-g  refused-markers: task-f.pr-register-refused task-g.pr-register-refused 
+
+==== lab teardown ====
+rm -rf /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.gkXfqG
