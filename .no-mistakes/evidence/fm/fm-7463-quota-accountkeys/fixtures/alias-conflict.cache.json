@@ -1,0 +1,144 @@
+{
+ "schemaVersion": 3,
+ "providers": [
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 20,
+     "percentRemaining": 80,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:05:51Z",
+     "resetsAt": "2026-11-10T19:05:51Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 20,
+     "percentRemaining": 80,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:05:51Z",
+     "resetsAt": "2026-11-16T15:05:51Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:05:51Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "accountKey": "acct-a",
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:05:51Z",
+    "lanes": 3,
+    "lane": 0,
+    "accountKeys": [
+     "acct-a",
+     "openai-codex"
+    ]
+   }
+  },
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 30,
+     "percentRemaining": 70,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:05:51Z",
+     "resetsAt": "2026-11-10T19:05:51Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 30,
+     "percentRemaining": 70,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:05:51Z",
+     "resetsAt": "2026-11-16T15:05:51Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:05:51Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "accountKey": "acct-b",
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:05:51Z",
+    "lanes": 3,
+    "lane": 1,
+    "accountKeys": [
+     "acct-b",
+     "openai-codex"
+    ]
+   }
+  },
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 10,
+     "percentRemaining": 90,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:05:51Z",
+     "resetsAt": "2026-11-10T19:05:51Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 10,
+     "percentRemaining": 90,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:05:51Z",
+     "resetsAt": "2026-11-16T15:05:51Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:05:51Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:05:51Z",
+    "lanes": 3,
+    "lane": 2
+   }
+  }
+ ]
+}

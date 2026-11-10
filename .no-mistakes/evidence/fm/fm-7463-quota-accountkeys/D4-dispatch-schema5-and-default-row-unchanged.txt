@@ -1,0 +1,72 @@
+# Scenario D4 - schema 5 and schema-6 default-row behavior byte-identical between base 913bb7a7 and head c7e127ad
+# Each snapshot is REAL quota-axi output captured once (or a jq edit of it), served identically to both trees; only latency_ms is normalized.
+
+## schema5: schemaVersion=5 codex rows: [{"accountKey":null,"accountKeys":["default"]}]
+BYTE-IDENTICAL (base == head):
+    dispatch-resolve:
+      status: escalate
+      model: jev-1.13.0   latency_ms: N   tokens: 100/10
+      rule: rule_1 (The task generates images.)   confidence: 0.95
+      probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+      reason: genuine spendPriority tie
+      note: rule matched
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  scope=all_models  remaining=70%  spendPriority=-1.2613  runway=projected_exhaustion  -> eligible
+      candidate: codex:gpt-5.6-sol  provider=codex  scope=all_models  remaining=70%  spendPriority=-1.2613  runway=projected_exhaustion  -> eligible
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  scope=all_models  remaining=70%  spendPriority=-1.2613  runway=projected_exhaustion  -> eligible
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## schema5-strayKeys: schemaVersion=5 codex rows: [{"accountKey":null,"accountKeys":"openai-codex"}]
+BYTE-IDENTICAL (base == head):
+    dispatch-resolve:
+      status: escalate
+      model: jev-1.13.0   latency_ms: N   tokens: 100/10
+      rule: rule_1 (The task generates images.)   confidence: 0.95
+      probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+      reason: genuine spendPriority tie
+      note: rule matched
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  scope=all_models  remaining=70%  spendPriority=-1.2613  runway=projected_exhaustion  -> eligible
+      candidate: codex:gpt-5.6-sol  provider=codex  scope=all_models  remaining=70%  spendPriority=-1.2613  runway=projected_exhaustion  -> eligible
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  scope=all_models  remaining=70%  spendPriority=-1.2613  runway=projected_exhaustion  -> eligible
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## plain6: schemaVersion=6 codex rows: [{"accountKey":"codex-home","accountKeys":["codex-home"]},{"accountKey":"openai-codex-work","accountKeys":["openai-codex-work"]},{"accountKey":"default","accountKeys":["default"]}]
+BYTE-IDENTICAL (base == head):
+    dispatch-resolve:
+      status: clear
+      model: jev-1.13.0   latency_ms: N   tokens: 100/10
+      rule: rule_1 (The task generates images.)   confidence: 0.95
+      probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+      note: rule matched
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  scope=all_models  remaining=50%  spendPriority=-2.8865  runway=projected_exhaustion  -> eligible
+      candidate: codex:gpt-5.6-sol  provider=codex  scope=all_models  remaining=80%  spendPriority=-0.4532  runway=projected_exhaustion  -> eligible
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  scope=all_models  remaining=60%  spendPriority=-2.0754  runway=projected_exhaustion  -> eligible
+      profile: --harness 'codex' --model 'gpt-5.6-sol'
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"clear","profile":{"harness":"codex","model":"gpt-5.6-sol","effort":null}}
+
+## plain6-nokeys: schemaVersion=6 codex rows: [{"accountKey":"codex-home","accountKeys":null},{"accountKey":"openai-codex-work","accountKeys":null},{"accountKey":"default","accountKeys":null}]
+BYTE-IDENTICAL (base == head):
+    dispatch-resolve:
+      status: clear
+      model: jev-1.13.0   latency_ms: N   tokens: 100/10
+      rule: rule_1 (The task generates images.)   confidence: 0.95
+      probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+      note: rule matched
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  scope=all_models  remaining=50%  spendPriority=-2.8865  runway=projected_exhaustion  -> eligible
+      candidate: codex:gpt-5.6-sol  provider=codex  scope=all_models  remaining=80%  spendPriority=-0.4532  runway=projected_exhaustion  -> eligible
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  scope=all_models  remaining=60%  spendPriority=-2.0754  runway=projected_exhaustion  -> eligible
+      profile: --harness 'codex' --model 'gpt-5.6-sol'
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"clear","profile":{"harness":"codex","model":"gpt-5.6-sol","effort":null}}
+
+## nocodex6: schemaVersion=6 codex rows: []
+BYTE-IDENTICAL (base == head):
+    dispatch-resolve:
+      status: escalate
+      model: jev-1.13.0   latency_ms: N   tokens: 100/10
+      rule: rule_1 (The task generates images.)   confidence: 0.95
+      probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+      reason: no rankable eligible candidate
+      note: rule matched
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex not in the quota snapshot: disclosed uncertainty
+      candidate: codex:gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex not in the quota snapshot: disclosed uncertainty
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex not in the quota snapshot: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}

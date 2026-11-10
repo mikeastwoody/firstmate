@@ -1,0 +1,30 @@
+# Scenario D1 - Pi lane covered only by accountKeys (issue #7463 regression)
+# quota-axi: REAL /opt/homebrew/bin/quota-axi 0.1.62 on disposable cache fixture (isolated HOME), emitting:
+{"schemaVersion":6,"codexRows":[{"accountKey":"codex-home","accountKeys":["codex-home","openai-codex"],"pct":80}]}
+# rules rule_1.use:
+[{"harness":"pi","model":"openai-codex/gpt-5.6-sol","provider":"codex"},{"harness":"pi","model":"openai-codex-work/gpt-5.6-terra","provider":"codex"}]
+
+### base (913bb7a7) bin/fm-dispatch-resolve.sh
+dispatch-resolve:
+  status: escalate
+  model: jev-1.13.0   latency_ms: 15   tokens: 100/10
+  rule: rule_1 (The task generates images.)   confidence: 0.95
+  probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+  reason: no rankable eligible candidate
+  note: rule matched
+  candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+  candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex-work: disclosed uncertainty
+[exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+### head (c7e127ad) bin/fm-dispatch-resolve.sh
+dispatch-resolve:
+  status: clear
+  model: jev-1.13.0   latency_ms: 15   tokens: 100/10
+  rule: rule_1 (The task generates images.)   confidence: 0.95
+  probabilities: rule_1=0.95 rule_2=0.025 default=0.025
+  note: rule matched
+  note: 1 eligible candidate(s) unranked (codex)
+  candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  scope=all_models  remaining=80%  spendPriority=-0.4511  runway=projected_exhaustion  -> eligible
+  candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex-work: disclosed uncertainty
+  profile: --harness 'pi' --model 'openai-codex/gpt-5.6-sol'
+[exit=0] task-record: {"task":"fm-lab-7463","status":"clear","profile":{"harness":"pi","model":"openai-codex/gpt-5.6-sol","effort":null}}

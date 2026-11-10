@@ -1,0 +1,80 @@
+# Scenario D3 - malformed schema-6 accountKeys must be rejected as an invalid snapshot
+# Base snapshot = REAL quota-axi output (covered fixture); the codex row's accountKeys is then replaced with each malformed value and served by the PATH shim.
+
+## accountKeys="openai-codex"  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys="openai-codex"  [head]
+      status: error
+      reason: quota-axi --json returned an invalid snapshot
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"error","profile":null}
+
+## accountKeys=["openai-codex", 1]  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys=["openai-codex", 1]  [head]
+      status: error
+      reason: quota-axi --json returned an invalid snapshot
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"error","profile":null}
+
+## accountKeys=[""]  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys=[""]  [head]
+      status: error
+      reason: quota-axi --json returned an invalid snapshot
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"error","profile":null}
+
+## accountKeys=["openai codex"]  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys=["openai codex"]  [head]
+      status: error
+      reason: quota-axi --json returned an invalid snapshot
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"error","profile":null}
+
+## accountKeys=null  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys=null  [head]
+      status: error
+      reason: quota-axi --json returned an invalid snapshot
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"error","profile":null}
+
+## accountKeys={"k":"openai-codex"}  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys={"k":"openai-codex"}  [head]
+      status: error
+      reason: quota-axi --json returned an invalid snapshot
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"error","profile":null}
+
+## accountKeys=[]  [base]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## accountKeys=[]  [head]
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}

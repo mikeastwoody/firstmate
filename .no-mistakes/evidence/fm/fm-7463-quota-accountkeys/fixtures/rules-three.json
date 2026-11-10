@@ -1,0 +1,12 @@
+{
+  "rules": [
+    { "when": "The task generates images.",
+      "use": [
+        { "harness": "pi", "model": "openai-codex/gpt-5.6-sol", "provider": "codex" },
+        { "harness": "codex", "model": "gpt-5.6-sol" },
+        { "harness": "pi", "model": "openai-codex-work/gpt-5.6-terra", "provider": "codex" }
+      ] },
+    { "when": "A simple bug fix with a stated root cause.",
+      "use": { "harness": "claude", "model": "sonnet" } }
+  ]
+}

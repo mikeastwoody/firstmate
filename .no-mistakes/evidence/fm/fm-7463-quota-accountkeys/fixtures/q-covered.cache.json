@@ -1,0 +1,97 @@
+{
+ "schemaVersion": 3,
+ "providers": [
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 20,
+     "percentRemaining": 80,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:06:24Z",
+     "resetsAt": "2026-11-10T19:06:24Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 20,
+     "percentRemaining": 80,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:06:24Z",
+     "resetsAt": "2026-11-16T15:06:24Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:06:24Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "accountKey": "openai-codex",
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:06:24Z",
+    "lanes": 2,
+    "lane": 0,
+    "accountKeys": [
+     "openai-codex",
+     "codex-home"
+    ]
+   }
+  },
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 100,
+     "percentRemaining": 0,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:06:24Z",
+     "resetsAt": "2026-11-10T19:06:24Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 100,
+     "percentRemaining": 0,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:06:24Z",
+     "resetsAt": "2026-11-16T15:06:24Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:06:24Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "accountKey": "openai-codex-work",
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:06:24Z",
+    "lanes": 2,
+    "lane": 1
+   }
+  }
+ ]
+}

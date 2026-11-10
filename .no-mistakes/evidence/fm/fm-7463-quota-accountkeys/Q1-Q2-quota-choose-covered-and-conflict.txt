@@ -1,0 +1,22 @@
+# Scenarios Q1/Q2 - bin/fm-quota-choose.sh on REAL quota-axi 0.1.62 snapshots (disposable cache fixtures, isolated HOME)
+
+## Q1 covered: codex rows [{"accountKey":"openai-codex","accountKeys":["openai-codex","codex-home"],"pct":80,"runway":"projected_exhaustion"},{"accountKey":"openai-codex-work","accountKeys":["openai-codex-work"],"pct":0,"runway":"exhausted_now"}]
+## candidates: codex:default (lane codex-home) then cursor:default (cursor not set up in snapshot)
+### base
+    none
+        [exit=1]
+### head
+    codex default
+        [exit=0]
+### head, rows reversed (order independence)
+    codex default
+        [exit=0]
+
+## Q2 conflict: codex rows [{"accountKey":"openai-codex","accountKeys":["openai-codex","codex-home"],"pct":80},{"accountKey":"codex-home","accountKeys":["codex-home"],"pct":70},{"accountKey":"default","accountKeys":["default"],"pct":50}]
+## candidates: codex:default (lane codex-home, covered by 2 rows) then opencode:default (codex provider, default row)
+### base
+    codex default
+        [exit=0]
+### head
+    opencode default
+        [exit=0]

@@ -1,0 +1,49 @@
+# Scenario D5 - adversarial coverage: two rows alias the same key via accountKeys only; and a key listed by ANOTHER provider's row
+
+## fixture alias-conflict -> REAL quota-axi rows:
+{"provider":"codex","accountKey":"acct-a","accountKeys":["acct-a","openai-codex"],"pct":80}
+{"provider":"codex","accountKey":"acct-b","accountKeys":["acct-b","openai-codex"],"pct":70}
+{"provider":"codex","accountKey":"default","accountKeys":["default"],"pct":90}
+### base
+      status: escalate
+      reason: genuine spendPriority tie
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  scope=all_models  remaining=90%  spendPriority=0.358  runway=through_reset  -> eligible
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  scope=all_models  remaining=90%  spendPriority=0.358  runway=through_reset  -> eligible
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+### head
+      status: clear
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has 2 quota rows covering account openai-codex; left unmeasured: disclosed uncertainty
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  scope=all_models  remaining=90%  spendPriority=0.358  runway=through_reset  -> eligible
+      profile: --harness 'pi' --model 'openai-codex-work/gpt-5.6-terra'
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"clear","profile":{"harness":"pi","model":"openai-codex-work/gpt-5.6-terra","effort":null}}
+
+## fixture cross -> REAL quota-axi rows:
+{"provider":"codex","accountKey":"codex-home","accountKeys":["codex-home"],"pct":80}
+### base
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex-work: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+### head
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex-work: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+
+## fixture cross (edited capture: a known claude row lists openai-codex in accountKeys; codex row covers only codex-home)
+{"provider":"codex","accountKey":"codex-home","accountKeys":["codex-home"],"pct":80}
+{"provider":"claude","accountKey":"claude-x","accountKeys":["claude-x","openai-codex"],"pct":80}
+### base
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex-work: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}
+### head
+      status: escalate
+      reason: no rankable eligible candidate
+      candidate: pi:openai-codex/gpt-5.6-sol  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex: disclosed uncertainty
+      candidate: pi:openai-codex-work/gpt-5.6-terra  provider=codex  -> eligible, unranked: provider codex has no quota row for account openai-codex-work: disclosed uncertainty
+    [exit=0] task-record: {"task":"fm-lab-7463","status":"escalate","profile":null}

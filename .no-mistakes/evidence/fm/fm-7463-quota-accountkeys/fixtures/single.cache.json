@@ -1,0 +1,48 @@
+{
+ "schemaVersion": 3,
+ "providers": [
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 30,
+     "percentRemaining": 70,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:04:19Z",
+     "resetsAt": "2026-11-10T19:04:19Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 30,
+     "percentRemaining": 70,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:04:19Z",
+     "resetsAt": "2026-11-16T15:04:19Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:04:19Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:04:19Z",
+    "lanes": 1,
+    "lane": 0
+   }
+  }
+ ]
+}

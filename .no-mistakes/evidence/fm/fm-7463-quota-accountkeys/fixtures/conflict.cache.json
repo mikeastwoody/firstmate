@@ -1,0 +1,140 @@
+{
+ "schemaVersion": 3,
+ "providers": [
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 20,
+     "percentRemaining": 80,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:04:19Z",
+     "resetsAt": "2026-11-10T19:04:19Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 20,
+     "percentRemaining": 80,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:04:19Z",
+     "resetsAt": "2026-11-16T15:04:19Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:04:19Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "accountKey": "codex-home",
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:04:19Z",
+    "lanes": 3,
+    "lane": 0,
+    "accountKeys": [
+     "codex-home",
+     "openai-codex"
+    ]
+   }
+  },
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 95,
+     "percentRemaining": 5,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:04:19Z",
+     "resetsAt": "2026-11-10T19:04:19Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 95,
+     "percentRemaining": 5,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:04:19Z",
+     "resetsAt": "2026-11-16T15:04:19Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:04:19Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "accountKey": "openai-codex",
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:04:19Z",
+    "lanes": 3,
+    "lane": 1
+   }
+  },
+  {
+   "provider": "codex",
+   "label": "Codex",
+   "source": "oauth",
+   "windows": [
+    {
+     "id": "five_hour",
+     "label": "session",
+     "kind": "session",
+     "percentUsed": 50,
+     "percentRemaining": 50,
+     "windowSeconds": 18000,
+     "startsAt": "2026-11-10T14:04:19Z",
+     "resetsAt": "2026-11-10T19:04:19Z"
+    },
+    {
+     "id": "weekly",
+     "label": "week",
+     "kind": "weekly",
+     "percentUsed": 50,
+     "percentRemaining": 50,
+     "windowSeconds": 604800,
+     "startsAt": "2026-11-09T15:04:19Z",
+     "resetsAt": "2026-11-16T15:04:19Z"
+    }
+   ],
+   "state": {
+    "status": "fresh",
+    "stale": false,
+    "refreshedAt": "2026-11-10T15:04:19Z",
+    "sourcesTried": [
+     "oauth"
+    ]
+   },
+   "reuse": {
+    "context": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "inputs": [],
+    "inputsDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "readingAt": "2026-11-10T15:04:19Z",
+    "lanes": 3,
+    "lane": 2
+   }
+  }
+ ]
+}
