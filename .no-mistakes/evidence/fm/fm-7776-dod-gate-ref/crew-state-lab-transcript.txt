@@ -1,0 +1,52 @@
+lab tmux socket: /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.VIHi7x/tmux/tmux-501/fm-lab (crew-state resolves: /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.VIHi7x/tmux/tmux-501/fm-lab)
+
+### C1 no-mistakes done; head only on the local gate mirror
+HEAD=57a645a34293fd1baf822691a297b287f7b81988; refs containing it:
+  refs/heads/fm/nm-fix
+  refs/remotes/no-mistakes/fm/nm-fix
+
+### C1 on THIS change
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-crew-state.sh nm-fix
+state: blocked · source: status-log · named head 57a645a34293fd1baf822691a297b287f7b81988 is unreachable outside the worker copy
+exit=0
+
+### C1 on BASE commit
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x/base-root/bin/fm-crew-state.sh nm-fix
+state: done · source: status-log · PR https://gitlab.example.test/o/demo/-/merge_requests/7 checks green
+exit=0
+
+### C2 pipeline pushed to origin and the copy fetched -> done
+  refs/heads/fm/nm-fix
+  refs/remotes/no-mistakes/fm/nm-fix
+  refs/remotes/origin/fm/nm-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-crew-state.sh nm-fix
+state: done · source: status-log · PR https://gitlab.example.test/o/demo/-/merge_requests/7 checks green
+exit=0
+
+### C3 local-only done; branch in the project clone AND on the gate mirror -> done
+  refs/heads/fm/local-fix
+  refs/remotes/no-mistakes/fm/local-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-crew-state.sh local-fix
+state: done · source: status-log · ready in branch fm/local-fix
+exit=0
+pinned local done head in meta: local_done_head=34cb262a1c79bea59d9554146c5e56778bacb6d1
+
+### C4 local-only standalone copy; head only on the project clone's gate mirror -> blocked
+project clone refs containing HEAD:
+  refs/remotes/no-mistakes/fm/solo-local
+
+### C4 on THIS change
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-crew-state.sh solo-local
+state: blocked · source: status-log · named head bd22259d75b493b3239f2cc57d5d9e5415ee18a3 is unreachable outside the worker copy
+exit=0
+
+### C4 on BASE commit
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.VIHi7x/base-root/bin/fm-crew-state.sh solo-local
+state: done · source: status-log · ready in branch fm/solo-local
+exit=0
+
+### lab tmux windows
+  placeholder
+  fm-nm-fix
+  fm-local-fix
+  fm-solo-local

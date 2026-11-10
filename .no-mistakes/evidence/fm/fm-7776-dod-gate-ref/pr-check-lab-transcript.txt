@@ -1,0 +1,116 @@
+
+### S1 adversarial: no-mistakes done whose head only reached the local gate mirror
+$ git -C /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t/wt/demo-fix push -q no-mistakes fm/demo-fix
+worker HEAD=05a04db31cb800211c7d0f840ba12ad9e33d2116
+refs containing HEAD (worker copy):
+  refs/heads/fm/demo-fix
+  refs/remotes/no-mistakes/fm/demo-fix
+status: done: PR https://gitlab.example.test/o/demo/-/merge_requests/4 checks green
+
+### S1 on THIS change (db2f73fe)
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh demo-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+error: named head 05a04db31cb800211c7d0f840ba12ad9e33d2116 is unreachable outside the worker copy
+exit=1
+meta pr= line: <none>
+published poll files: 
+
+### S1 on BASE commit (913bb7a7) - same fixture, pre-fix code
+  refs/heads/fm/demo-fix
+  refs/remotes/no-mistakes/fm/demo-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.Vfl92C /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.Vfl92C/base-root/bin/fm-pr-check.sh demo-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+armed: state/demo-fix.check.sh
+exit=0
+meta pr= line: pr=https://gitlab.example.test/o/demo/-/merge_requests/4
+published poll files: demo-fix.pr-poll demo-fix.pr-poll-registration 
+
+### S2 watcher scan path: fm-pr-check.sh scan sees the done line and refuses it
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t bin/fm-pr-check.sh scan
+demo-fix reported https://gitlab.example.test/o/demo/-/merge_requests/4 in a done line, but it was not recorded: named head 05a04db31cb800211c7d0f840ba12ad9e33d2116 is unreachable outside the worker copy
+exit=0
+meta pr= line: <none>
+published poll files: 
+
+### S3 documented consequence: pipeline pushed to origin from the gate clone; copy has not fetched
+$ git -C /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t/remotes/gate.git push -q /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t/remotes/origin.git fm/demo-fix
+origin.git now holds fm/demo-fix=05a04db31cb800211c7d0f840ba12ad9e33d2116
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh demo-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+error: named head 05a04db31cb800211c7d0f840ba12ad9e33d2116 is unreachable outside the worker copy
+exit=1
+meta pr= line: <none>
+published poll files: 
+
+### S4 happy path: worker copy fetches origin -> registration accepted and poll armed
+$ git -C /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t/wt/demo-fix fetch -q origin
+  refs/heads/fm/demo-fix
+  refs/remotes/no-mistakes/fm/demo-fix
+  refs/remotes/origin/fm/demo-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh demo-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+armed: state/demo-fix.check.sh
+exit=0
+meta pr= line: pr=https://gitlab.example.test/o/demo/-/merge_requests/4
+published poll files: demo-fix.pr-poll demo-fix.pr-poll-registration 
+
+### S4b scan after acceptance: nothing left to refuse
+exit=0
+
+### S5 nested gate branch fm/nested/fix only on the gate mirror -> refused
+  refs/heads/fm/nested/fix
+  refs/remotes/no-mistakes/fm/nested/fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh nested-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+error: named head 40fe1d2b150842557f917969994d369a856cf1ea is unreachable outside the worker copy
+exit=1
+meta pr= line: <none>
+published poll files: 
+
+### S6 boundary: a real remote whose name merely starts with no-mistakes still counts
+  refs/heads/fm/fork-fix
+  refs/remotes/no-mistakes-fork/fm/fork-fix
+  refs/remotes/no-mistakes/fm/fork-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh fork-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+armed: state/fork-fix.check.sh
+exit=0
+meta pr= line: pr=https://gitlab.example.test/o/demo/-/merge_requests/4
+published poll files: fork-fix.pr-poll fork-fix.pr-poll-registration 
+
+### S7 standalone worker clone: only the project clone's gate mirror holds the head -> refused
+worker copy refs containing HEAD:
+  refs/heads/fm/solo-fix
+project clone refs containing HEAD:
+  refs/remotes/no-mistakes/fm/solo-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh solo-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+error: named head fada55b2782244383483d319e54447814522725c is unreachable outside the worker copy
+exit=1
+meta pr= line: <none>
+published poll files: 
+
+### S7b project clone fetches origin after the pipeline push -> accepted
+  refs/remotes/no-mistakes/fm/solo-fix
+  refs/remotes/origin/fm/solo-fix
+$ FM_HOME=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.tQQU7t /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M72YTYFJ4DYG9KSMY6G3AYDJ/bin/fm-pr-check.sh solo-fix https://gitlab.example.test/o/demo/-/merge_requests/4
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+armed: state/solo-fix.check.sh
+exit=0
+meta pr= line: pr=https://gitlab.example.test/o/demo/-/merge_requests/4
+published poll files: solo-fix.pr-poll solo-fix.pr-poll-registration 
+
+### glab shim invocations during all runs (gate needs no forge read):
+<none>

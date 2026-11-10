@@ -1,0 +1,8 @@
+$ bash tests/fm-dod-lib.test.sh   # this change
+ok - named head only on the no-mistakes gate mirror is refused; on origin it is accepted
+ok - local-only named branch stays reachable when the gate mirror also holds it
+exit=0
+
+$ bash tests/fm-dod-lib.test.sh   # new tests against BASE bin/ (913bb7a7)
+not ok - named head only on the no-mistakes gate mirror was accepted (exit 0)
+exit=1
