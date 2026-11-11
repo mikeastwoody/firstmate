@@ -1,0 +1,4 @@
+ok - fm-teardown removes the dir pointed to by tasktmp= in meta
+ok - fm-teardown skips gracefully when tasktmp= is absent (backward compat)
+ok - fm-teardown skips gracefully when tasktmp= points to a nonexistent dir
+bash tests/fm-gotmp.test.sh  1.06s user 1.94s system 75% cpu 3.953 total

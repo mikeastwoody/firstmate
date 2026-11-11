@@ -1,0 +1,114 @@
+product: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M74R9JGTSPSTAQ88WKQZ5F8J (b14c4fa9)
+git: git version 2.55.0; bash: 5.3.20(1)-release
+
+==== S1 gate-mirror-only head is refused at PR registration (GitLab MR, no-mistakes) ====
+named head: 8673eade9d8665325af7c667596ac5cfb56c642f
+refs holding it before registration:
+  refs/remotes/no-mistakes/fm/task-a
+$ fm-pr-check.sh task-a https://gitlab.example.test/g/r/-/merge_requests/4   -> exit 1
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | ●  WATCHER DOWN - SUPERVISION IS OFF
+  | ●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+  | ●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+  | ●  This is a supervision warning only; the guarded operation WILL still run.
+  | ●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | error: named head 8673eade9d8665325af7c667596ac5cfb56c642f is unreachable outside the worker copy
+  PASS: registration refused (exit 1)
+  PASS: reason names the head as unreachable outside the worker copy
+  PASS: no pr= recorded
+  PASS: refresh did not fetch the no-mistakes gate (no canary ref)
+  PASS: origin WAS refreshed (its new probe branch is now tracked)
+BASE (1d43f9cb) same fixture -> exit 0; pr=https://gitlab.example.test/g/r/-/merge_requests/4
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | ●  WATCHER DOWN - SUPERVISION IS OFF
+  | ●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+  | ●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+  | ●  This is a supervision warning only; the guarded operation WILL still run.
+  | ●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | armed: state/task-a.check.sh
+  PASS: base commit accepted the gate-mirror-only head (the #7776 bug reproduced)
+
+==== S2 head the pipeline pushed to origin from its gate clone is accepted after the refresh ====
+warning: remote HEAD refers to nonexistent ref, unable to checkout
+origin holds: 8673eade9d8665325af7c667596ac5cfb56c642f
+  PASS: fixture: copy/project have NOT fetched origin's branch
+$ fm-pr-check.sh task-a https://gitlab.example.test/g/r/-/merge_requests/4   -> exit 0
+  | WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+  | armed: state/task-a.check.sh
+  PASS: registration accepted (exit 0)
+  PASS: pr= recorded in meta
+  PASS: refresh left origin's head in the refs
+  PASS: gate still not fetched (no canary ref)
+lab state after registration:
+  contributions.check-trust
+  contributions.check.sh
+  task-a.check.sh
+  task-a.meta
+  task-a.pr-poll
+  task-a.pr-poll-registration
+meta:
+  window=firstmate:fm-task-a
+  endpoint_task_id=task-a
+  worktree=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm7776-work.k2iwkq/s1/wt-task-a
+  project=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm7776-work.k2iwkq/s1/project
+  kind=ship
+  mode=no-mistakes
+  spawn_gen=lab-task-a
+  pr=https://gitlab.example.test/g/r/-/merge_requests/4
+
+==== S3 merge-time re-record (FM_PR_CHECK_MERGE=1, as bin/fm-pr-merge.sh calls it) refreshes before refusing ====
+unpushed (gate mirror only): exit 1
+  | WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+  | error: named head ee20a972b41c9b6afd088524276b8fe63664897f is unreachable outside the worker copy
+  PASS: merge-time re-record refuses an unpushed head
+  PASS:   with the unreachable reason
+warning: remote HEAD refers to nonexistent ref, unable to checkout
+after the gate clone pushed to origin: exit 0
+  | WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+  | armed: state/task-b.check.sh
+  PASS: merge-time re-record accepts origin's unfetched head
+  PASS:   pr= recorded
+
+==== S4 failed refresh: refusal says the verdict used the last-known refs ====
+exit 1
+  | WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+  | error: named head e2a73d95e561a41f96a5355a8ba5eb5bf35c6aea is unreachable outside the worker copy; could not refresh remote: origin, so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+  PASS: refused (exit 1)
+  PASS: reason says could not refresh origin and used the last-known refs
+
+==== S5 failed origins in a standalone copy and its project clone are named unambiguously ====
+exit 1
+  | WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+  | error: named head fd0d53e0b1d1843928a4c71694d92b3be1d586f7 is unreachable outside the worker copy; could not refresh remote: origin, origin (project clone), so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+  PASS: refused (exit 1)
+  PASS: names 'origin, origin (project clone)'
+
+==== S6 scan: a remote that hangs and sorts before origin cannot starve origin's refresh ====
+warning: remote HEAD refers to nonexistent ref, unable to checkout
+remote order: backup no-mistakes origin 
+$ FM_CHECK_TIMEOUT=14 fm-pr-check.sh scan -> exit 0 in 6s (budget 9s, refresh deadline start+4s)
+  | <no output>
+  PASS: scan exit 0
+  PASS: task-e registered (pr= recorded)
+  PASS: origin fetched behind the hanging remote
+  PASS: scan finished within its budget
+  PASS: no refusal marker
+
+==== S7 scan: a hanging remote in a standalone copy cannot starve the project clone's origin ====
+copy remotes: fork origin ; project remotes: no-mistakes origin 
+BEFORE the last fix (a0f63350): scan exit 0 in 7s
+  | task-f reported https://gitlab.example.test/g/r/-/merge_requests/9 in a done line, but it was not recorded: named head 802fcc818865803d378635ab7145137d9736f424 is unreachable outside the worker copy; could not refresh remote: fork, origin, so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+  pr recorded: 
+  PASS: a0f63350 starved the project clone's origin (refused, project origin unfetched)
+AFTER (target): $ FM_CHECK_TIMEOUT=16 fm-pr-check.sh scan -> exit 0 in 5s (budget 11s, refresh deadline start+6s)
+  | <no output>
+  PASS: scan exit 0
+  PASS: task-f registered (pr= recorded)
+  PASS: project clone origin fetched behind the copy's hanging remote
+  PASS: scan finished within its budget
+
+==== forge CLI stand-in calls ====
+
+==== RESULT: 29 passed, 0 failed ====

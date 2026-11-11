@@ -1,0 +1,83 @@
+product: /Users/mikeastwood/.no-mistakes/worktrees/e92df20f4e84/01M74R9JGTSPSTAQ88WKQZ5F8J (b14c4fa9)
+NO_MISTAKES_GATE is set1 (lifecycle allowed only because each FM_HOME is a marked lab home)
+
+==== T1 teardown refreshes through the shared fm_dod_refresh_remote_refs and proves work landed from another clone ====
+before teardown, commits not on a tracked remote: 1
+$ fm-teardown.sh task-x1 -> exit 0
+  | fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.ImdEsB
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | ●  WATCHER DOWN - SUPERVISION IS OFF
+  | ●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+  | ●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+  | ●  This is a supervision warning only; the guarded operation WILL still run.
+  | ●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm7776-td.5eCoht/t1/project: already current
+  | teardown task-x1 complete (window firstmate:fm-task-x1, worktree /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm7776-td.5eCoht/t1/wt-task-x1)
+  | Backlog: task-x1 just finished (this home keeps no markdown backlog at /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.ImdEsB/data/backlog.md). Update /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.ImdEsB/data/backlog.md - move task-x1 to Done, keep Done to the 10 most recent, then re-scan Queued and dispatch only work whose blockers are gone and date is due.
+  PASS: teardown allowed (exit 0)
+  PASS: no REFUSED line
+5a0647e6f90276a9a37e536bf6034d9df6716651
+  PASS: origin's release branch was fetched into the copy's refs
+  PASS: the no-mistakes gate was not fetched (no canary ref)
+  PASS: treehouse return was reached
+
+==== T2 teardown with an unreachable origin refuses and names it (FM_DOD_REFRESH_FAILED) ====
+$ fm-teardown.sh task-x2 -> exit 1
+  | fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.t89TQt
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | ●  WATCHER DOWN - SUPERVISION IS OFF
+  | ●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+  | ●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+  | ●  This is a supervision warning only; the guarded operation WILL still run.
+  | ●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | REFUSED: worktree /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm7776-td.5eCoht/t2/wt-task-x2 has work not on any remote and not landed.
+  | unpushed commits:
+  | c9a31d9 add feature for task-x2
+  | Could not refresh remote: origin. This verdict used the last-known refs, so the work may be there; retry once the remote is reachable.
+  | Push the branch, land its PR, or get the captain's explicit OK to discard, then --force.
+  PASS: teardown refused (exit 1)
+  PASS: REFUSED line printed
+  PASS: says 'Could not refresh remote: origin. This verdict used the last-known refs'
+  PASS: worktree kept, treehouse return not called
+
+==== T3 teardown of work only on the no-mistakes gate mirror refuses (gate never fetched) ====
+refs holding the head: refs/remotes/no-mistakes/fm/task-x3 
+$ fm-teardown.sh task-x3 -> exit 1
+  | fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.wZ5zEo
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | ●  WATCHER DOWN - SUPERVISION IS OFF
+  | ●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+  | ●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+  | ●  This is a supervision warning only; the guarded operation WILL still run.
+  | ●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+  | ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  | REFUSED: worktree /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm7776-td.5eCoht/t3/wt-task-x3 has work not on any remote and not landed.
+  | unpushed commits:
+  | 3d6c015 add feature for task-x3
+  | Push the branch, land its PR, or get the captain's explicit OK to discard, then --force.
+  PASS: teardown refused (exit 1)
+  PASS: REFUSED line printed
+  PASS: no refresh-failure note (origin fetched fine)
+  PASS: the no-mistakes gate was not fetched (no canary ref)
+  PASS: worktree kept, treehouse return not called
+
+==== S8 scan: once the refresh deadline passes the sweep starts no other task; the next sweep opens with it ====
+sweep 1: $ FM_CHECK_TIMEOUT=16 fm-pr-check.sh scan -> exit 0 in 7s
+  | task-a reported https://gitlab.example.test/g/r/-/merge_requests/11 in a done line, but it was not recorded: named head 5b453f9a52634fc2091b1933e412086f034ee620 is unreachable outside the worker copy; could not refresh remote: origin, backup, so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+  PASS: sweep 1 reports exactly one task
+  PASS: sweep 1 reports task-a with the last-known-refs reason
+  PASS: task-b not started after the refresh deadline (no marker)
+  PASS: sweep 1 within its 11s budget
+sweep 2: -> exit 0 in 6s
+  | task-b reported https://gitlab.example.test/g/r/-/merge_requests/12 in a done line, but it was not recorded: named head 5b453f9a52634fc2091b1933e412086f034ee620 is unreachable outside the worker copy; could not refresh remote: origin, backup, so this verdict used the last-known refs and the work may be there; retry once the remote is reachable
+  PASS: sweep 2 opens with task-b and reports its last-known-refs refusal
+  PASS: sweep 2 does not re-report task-a
+
+==== stand-in calls ====
+no-mistakes stand-in calls:    1 axi status;
+treehouse stand-in calls (last case): 
+probe fetches:    2 fetch backup;   2 fetch origin;
+
+==== RESULT: 20 passed, 0 failed ====
