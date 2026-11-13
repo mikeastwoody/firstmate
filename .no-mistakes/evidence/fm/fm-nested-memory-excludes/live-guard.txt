@@ -1,0 +1,1 @@
+ok - Claude Code 2.1.323 (Claude Code): the --settings project-memory patterns keep a clone's CLAUDE.md and rules out while the home's own CLAUDE.md loads
