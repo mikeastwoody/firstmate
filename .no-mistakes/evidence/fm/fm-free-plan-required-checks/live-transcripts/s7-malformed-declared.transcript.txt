@@ -1,0 +1,28 @@
+### scenario: s7-malformed-declared
+### head commit: b092ee53594e191a888ee0cd6040c4c7fa70ce57 (docs: tweak notes [skip ci])
+### config/github-required-checks:
+    # operator declarations
+    github.localhost/example/repo github-actions - build
+### away-posture record: absent
+### emulated GitHub state:
+    {"rules_hidden":true,"rollup":[{"name":"build","status":"COMPLETED","conclusion":"SUCCESS","startedAt":"2026-11-14T10:05:00Z"}],"check_runs":[{"name":"build","app":"github-actions","suite":1002,"conclusion":"success"}],"workflow_runs":[{"check_suite_id":1002,"event":"pull_request"}]}
+$ bin/fm-pr-merge.sh task-x1 https://github.localhost/example/repo/pull/120 
+--- stdout
+armed: state/task-x1.check.sh
+--- stderr
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+error: refusing to merge https://github.localhost/example/repo/pull/120
+  - line 2 of /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.UBsANF/config/github-required-checks is not a valid required-check declaration, so a required check that has not reported cannot be ruled out
+--- exit code: 1
+--- requests the emulated GitHub API received (via the real gh 2.103.3):
+    GRAPHQL pullRequest query
+    GRAPHQL pullRequest query
+    REST GET /repos/example/repo/branches/main
+    REST GET /repos/example/repo/rules/branches/main?per_page=100
+--- merge mutation reached GitHub: NO

@@ -1,0 +1,30 @@
+### scenario: s1-skipci-declared-away
+### head commit: b092ee53594e191a888ee0cd6040c4c7fa70ce57 (docs: tweak notes [skip ci])
+### config/github-required-checks:
+    github.localhost/example/repo github-actions pull_request build
+### away-posture record: present
+### emulated GitHub state:
+    {"rules_hidden":true,"rollup":[],"check_runs":[],"workflow_runs":[]}
+$ bin/fm-pr-merge.sh task-x1 https://github.localhost/example/repo/pull/120 
+--- stdout
+armed: state/task-x1.check.sh
+--- stderr
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: never, grace 300s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+error: refusing to merge https://github.localhost/example/repo/pull/120
+  - declared required check 'build' (github-actions, pull_request) has not reported at head b092ee53594e191a888ee0cd6040c4c7fa70ce57
+error: these required checks have not reported: build
+--- exit code: 1
+--- requests the emulated GitHub API received (via the real gh 2.103.3):
+    GRAPHQL pullRequest query
+    GRAPHQL pullRequest query
+    REST GET /repos/example/repo/branches/main
+    REST GET /repos/example/repo/rules/branches/main?per_page=100
+    REST GET /repos/example/repo/commits/b092ee53594e191a888ee0cd6040c4c7fa70ce57/check-runs?filter=all&per_page=100
+    REST GET /repos/example/repo/actions/runs?head_sha=b092ee53594e191a888ee0cd6040c4c7fa70ce57&per_page=100
+--- merge mutation reached GitHub: NO

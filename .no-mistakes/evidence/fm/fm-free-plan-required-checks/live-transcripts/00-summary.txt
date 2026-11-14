@@ -1,0 +1,13 @@
+s1-skipci-declared-away rc=1 merged=no
+s2-skipci-undeclared-away rc=0 merged=yes
+s3-dispatch-declared-away rc=1 merged=no
+s4-dispatch-undeclared-away rc=0 merged=yes
+s5-rerun-declared-away rc=0 merged=yes
+s6-rules-visible-declared rc=0 merged=yes
+s7-malformed-declared rc=1 merged=no
+s8-skipci-declared-waived rc=0 merged=yes
+p1-park-skipci-declared rc=3
+p2-park-dispatch-declared rc=3
+p3-park-rerun-declared rc=0
+p4-park-dispatch-undeclared rc=0
+RUN=/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-live-run.rFD6M8

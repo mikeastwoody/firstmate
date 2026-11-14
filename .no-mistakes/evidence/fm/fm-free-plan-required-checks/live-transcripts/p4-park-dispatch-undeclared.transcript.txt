@@ -1,0 +1,15 @@
+### scenario: p4-park-dispatch-undeclared
+### head commit: b092ee53594e191a888ee0cd6040c4c7fa70ce57 (docs: tweak notes [skip ci])
+### config/github-required-checks:
+    (absent)
+### emulated GitHub state:
+    {"rules_hidden":true,"rollup_state":null,"rollup":[{"name":"build","status":"COMPLETED","conclusion":"FAILURE","startedAt":"2026-11-13T10:00:00Z"},{"name":"build","status":"COMPLETED","conclusion":"SUCCESS","startedAt":"2026-11-13T10:05:00Z"}],"check_runs":[{"name":"build","app":"github-actions","suite":1001,"conclusion":"failure"},{"name":"build","app":"github-actions","suite":1002,"conclusion":"success"}],"workflow_runs":[{"check_suite_id":1001,"event":"pull_request"},{"check_suite_id":1002,"event":"workflow_dispatch"}]}
+$ bin/fm-park.sh gate task-x1
+--- stdout
+clean head=b092ee53594e191a888ee0cd6040c4c7fa70ce57
+--- stderr
+--- exit code: 0 (0 clean, 3 unclean, 1 unreadable)
+--- requests the emulated GitHub API received:
+    GRAPHQL park-gate query
+    REST GET /repos/example/repo/branches/main
+    REST GET /repos/example/repo/rules/branches/main?per_page=100
