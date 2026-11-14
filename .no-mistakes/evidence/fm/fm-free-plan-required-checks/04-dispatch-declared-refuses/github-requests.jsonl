@@ -1,0 +1,6 @@
+{"method": "POST", "host": "api.github.localhost", "path": "/graphql", "query": "", "graphql": "query PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) { repository(owner: $owner, name: $repo) { pullRequest(number: $pr_number) {headRefOid,id,number} } }", "variables": {"owner": "acme", "pr_number": 51, "repo": "app"}}
+{"method": "POST", "host": "api.github.localhost", "path": "/graphql", "query": "", "graphql": "query PullRequestByNumber($owner: String!, $repo: String!, $pr_number: Int!) { repository(owner: $owner, name: $repo) { pullRequest(number: $pr_number) {state,isDraft,mergeable,mergeStateStatus,headRefOid,baseRefName,statusCheckRollup: commits(last: 1) {nodes {commit {statusCheckRollup {contexts(fir", "variables": {"owner": "acme", "pr_number": 51, "repo": "app"}}
+{"method": "GET", "host": "api.github.localhost", "path": "/repos/acme/app/branches/main", "query": ""}
+{"method": "GET", "host": "api.github.localhost", "path": "/repos/acme/app/rules/branches/main", "query": "per_page=100"}
+{"method": "GET", "host": "api.github.localhost", "path": "/repos/acme/app/commits/d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2/check-runs", "query": "filter=all&per_page=100"}
+{"method": "GET", "host": "api.github.localhost", "path": "/repos/acme/app/actions/runs", "query": "head_sha=d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2&per_page=100"}

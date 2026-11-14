@@ -1,0 +1,2 @@
+armed: state/task-s3.check.sh
+verified: https://github.localhost/acme/app/pull/41 is merged (state=MERGED, merged=true, isInMergeQueue=false)

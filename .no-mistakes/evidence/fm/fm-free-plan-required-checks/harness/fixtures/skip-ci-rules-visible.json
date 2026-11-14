@@ -1,0 +1,12 @@
+{
+  "head": "d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1",
+  "rollup": [],
+  "check_runs": [],
+  "workflow_runs": [],
+  "rules_hidden": false,
+  "rules": [
+    {
+      "type": "deletion"
+    }
+  ]
+}

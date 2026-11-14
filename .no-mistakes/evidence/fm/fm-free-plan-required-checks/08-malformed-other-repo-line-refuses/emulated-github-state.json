@@ -1,0 +1,84 @@
+{
+  "head": "d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3",
+  "rollup": [
+    {
+      "__typename": "CheckRun",
+      "name": "build",
+      "checkSuite": {
+        "workflowRun": {
+          "workflow": {
+            "name": "CI"
+          }
+        }
+      },
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "startedAt": "2026-11-14T10:00:00Z",
+      "completedAt": "2026-11-14T10:02:00Z",
+      "detailsUrl": "x"
+    },
+    {
+      "__typename": "CheckRun",
+      "name": "build",
+      "checkSuite": {
+        "workflowRun": {
+          "workflow": {
+            "name": "CI"
+          }
+        }
+      },
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "startedAt": "2026-11-14T10:05:00Z",
+      "completedAt": "2026-11-14T10:07:00Z",
+      "detailsUrl": "y"
+    }
+  ],
+  "check_runs": [
+    {
+      "id": 1,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-11-14T10:00:00Z",
+      "app": {
+        "id": 15368,
+        "slug": "github-actions"
+      },
+      "check_suite": {
+        "id": 201
+      }
+    },
+    {
+      "id": 2,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-14T10:05:00Z",
+      "app": {
+        "id": 15368,
+        "slug": "github-actions"
+      },
+      "check_suite": {
+        "id": 202
+      }
+    }
+  ],
+  "workflow_runs": [
+    {
+      "id": 1,
+      "check_suite_id": 201,
+      "event": "pull_request"
+    },
+    {
+      "id": 2,
+      "check_suite_id": 202,
+      "event": "pull_request"
+    }
+  ],
+  "case": "08-malformed-other-repo-line-refuses",
+  "url": "https://github.localhost/acme/app/pull/91",
+  "number": 91,
+  "owner": "acme",
+  "repo": "app"
+}

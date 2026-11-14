@@ -1,0 +1,2 @@
+armed: state/task-s1b.check.sh
+verified: https://github.localhost/acme/app/pull/22 is merged (state=MERGED, merged=true, isInMergeQueue=false)

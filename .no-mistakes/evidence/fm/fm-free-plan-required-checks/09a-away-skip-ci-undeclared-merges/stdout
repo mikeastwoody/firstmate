@@ -1,0 +1,2 @@
+armed: state/task-s9a.check.sh
+verified: https://github.localhost/acme/app/pull/101 is merged (state=MERGED, merged=true, isInMergeQueue=false)

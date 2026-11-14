@@ -1,0 +1,4 @@
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+WARNING: queued wakes pending - drain them with bin/fm-wake-drain.sh before anything else.
+error: refusing to merge https://github.localhost/acme/app/pull/91
+  - line 2 of /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.Uyc120/config/github-required-checks is not a valid required-check declaration, so a required check that has not reported cannot be ruled out

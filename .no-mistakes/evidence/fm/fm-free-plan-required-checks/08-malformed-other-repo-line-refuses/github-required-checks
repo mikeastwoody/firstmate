@@ -1,0 +1,2 @@
+github.localhost/acme/app github-actions pull_request build
+github.com/other/repo github-actions push

@@ -1,0 +1,84 @@
+{
+  "head": "d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2",
+  "rollup": [
+    {
+      "__typename": "CheckRun",
+      "name": "build",
+      "checkSuite": {
+        "workflowRun": {
+          "workflow": {
+            "name": "CI"
+          }
+        }
+      },
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "startedAt": "2026-11-14T10:00:00Z",
+      "completedAt": "2026-11-14T10:02:00Z",
+      "detailsUrl": "https://github.localhost/acme/app/actions/runs/1"
+    },
+    {
+      "__typename": "CheckRun",
+      "name": "build",
+      "checkSuite": {
+        "workflowRun": {
+          "workflow": {
+            "name": "CI"
+          }
+        }
+      },
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "startedAt": "2026-11-14T10:05:00Z",
+      "completedAt": "2026-11-14T10:07:00Z",
+      "detailsUrl": "https://github.localhost/acme/app/actions/runs/2"
+    }
+  ],
+  "check_runs": [
+    {
+      "id": 1,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-11-14T10:00:00Z",
+      "app": {
+        "id": 15368,
+        "slug": "github-actions"
+      },
+      "check_suite": {
+        "id": 101
+      }
+    },
+    {
+      "id": 2,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-14T10:05:00Z",
+      "app": {
+        "id": 15368,
+        "slug": "github-actions"
+      },
+      "check_suite": {
+        "id": 102
+      }
+    }
+  ],
+  "workflow_runs": [
+    {
+      "id": 1,
+      "check_suite_id": 101,
+      "event": "pull_request"
+    },
+    {
+      "id": 2,
+      "check_suite_id": 102,
+      "event": "workflow_dispatch"
+    }
+  ],
+  "case": "04-dispatch-declared-refuses",
+  "url": "https://github.localhost/acme/app/pull/51",
+  "number": 51,
+  "owner": "acme",
+  "repo": "app"
+}

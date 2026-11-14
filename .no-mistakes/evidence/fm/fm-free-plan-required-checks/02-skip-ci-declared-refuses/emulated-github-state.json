@@ -1,0 +1,11 @@
+{
+  "head": "d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1",
+  "rollup": [],
+  "check_runs": [],
+  "workflow_runs": [],
+  "case": "02-skip-ci-declared-refuses",
+  "url": "https://github.localhost/acme/app/pull/31",
+  "number": 31,
+  "owner": "acme",
+  "repo": "app"
+}

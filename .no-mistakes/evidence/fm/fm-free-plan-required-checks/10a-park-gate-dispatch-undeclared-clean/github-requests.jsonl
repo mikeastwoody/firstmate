@@ -1,0 +1,3 @@
+{"method": "POST", "host": "api.github.localhost", "path": "/graphql", "query": "", "graphql": "query($owner:String!,$repo:String!,$number:Int!,$endCursor:String){repository(owner:$owner,name:$repo){pullRequest(number:$number){ state isDraft headRefOid baseRefName mergeable mergeStateStatus reviewDecision commits(last:1){nodes{commit{oid committedDate checkSuites(first:100){nodes{createdAt}} s", "variables": {"number": 51, "owner": "acme", "repo": "app"}}
+{"method": "GET", "host": "api.github.localhost", "path": "/repos/acme/app/branches/main", "query": ""}
+{"method": "GET", "host": "api.github.localhost", "path": "/repos/acme/app/rules/branches/main", "query": "per_page=100"}

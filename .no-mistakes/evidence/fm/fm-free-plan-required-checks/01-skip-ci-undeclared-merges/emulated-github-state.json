@@ -1,0 +1,11 @@
+{
+  "head": "d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1d1",
+  "rollup": [],
+  "check_runs": [],
+  "workflow_runs": [],
+  "case": "01-skip-ci-undeclared-merges",
+  "url": "https://github.localhost/acme/app/pull/22",
+  "number": 22,
+  "owner": "acme",
+  "repo": "app"
+}
