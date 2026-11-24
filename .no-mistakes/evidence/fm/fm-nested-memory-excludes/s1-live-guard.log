@@ -1,0 +1,2 @@
+ok - Claude Code 2.1.331 (Claude Code): the --settings project-memory patterns keep a clone's CLAUDE.md and rules out while the home's own CLAUDE.md loads
+env -u NO_MISTAKES_GATE FM_CLAUDE_PROJECT_MEMORY_LIVE=1 bash   1.06s user 0.72s system 81% cpu 2.177 total

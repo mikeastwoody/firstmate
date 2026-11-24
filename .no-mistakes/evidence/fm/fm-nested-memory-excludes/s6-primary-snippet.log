@@ -1,0 +1,12 @@
+== real claude 2.1.331 (Claude Code), primary home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.LXJxNJ/projects/home (under a dir named projects)
+== documented snippet written to .claude/settings.local.json:
+{
+  "claudeMdExcludes": [
+    "/private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.LXJxNJ/projects/home/projects/**/CLAUDE*.md",
+    "/private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.LXJxNJ/projects/home/projects/**/AGENTS.md",
+    "/private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.LXJxNJ/projects/home/projects/**/.claude/rules/**"
+  ]
+}
+no settings.local.json:            requests=2 read_result_sent=True home_CLAUDE.md=True clone_CLAUDE.md=True clone_@import=True clone_rule=True
+documented snippet:                requests=2 read_result_sent=True home_CLAUDE.md=True clone_CLAUDE.md=False clone_@import=False clone_rule=False
+bare **/projects/** (docs warn):   requests=2 read_result_sent=True home_CLAUDE.md=False clone_CLAUDE.md=False clone_@import=False clone_rule=False
