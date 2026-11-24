@@ -1,0 +1,74 @@
+==================== S1+S2: captain defers one call with hold --until, holds another undated ====================
+$ fm-captain-hold.sh hold dated-call --title ... --reason 'pick the release train' --until 2026-12-11
+dated-call
+$ fm-captain-hold.sh hold owed-call --title ... --reason 'approve the API shape'   (no --until)
+owed-call
+--- parent channel status log as written by fm-captain-hold.sh:
+needs-decision [key=captain-hold-dated-call-1] [until=2026-12-11] [at=1795541746]: captain hold dated-call: pick the release train
+needs-decision [key=captain-hold-owed-call-1] [at=1795541753]: captain hold owed-call: approve the API shape
+
+$ FM_STATE_OVERRIDE=<parent>/state bin/fm-wake-drain.sh   # drain #1
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+channel-mate [key=captain-hold-dated-call-1] [until=2026-12-11] needs-decision: captain hold dated-call: pick the release train
+channel-mate [key=captain-hold-owed-call-1] needs-decision: captain hold owed-call: approve the API shape
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit=0)
+
+==================== S3a: captain re-dates the same call (hold --until 2027-01-15) ====================
+needs-decision [key=captain-hold-dated-call-1] [until=2027-01-15] [at=1795541758]: captain hold dated-call: pick the release train
+
+$ FM_STATE_OVERRIDE=<parent>/state bin/fm-wake-drain.sh   # drain #2
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+channel-mate [key=captain-hold-owed-call-1] needs-decision: captain hold owed-call: approve the API shape
+channel-mate [key=captain-hold-dated-call-1] [until=2027-01-15] needs-decision: captain hold dated-call: pick the release train
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit=0)
+
+==================== S3b: later UNDATED republish of the same key (hold without --until) clears the date ====================
+needs-decision [key=captain-hold-dated-call-1] [at=1795541762]: captain hold dated-call: pick the release train
+
+$ FM_STATE_OVERRIDE=<parent>/state bin/fm-wake-drain.sh   # drain #3
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+channel-mate [key=captain-hold-owed-call-1] needs-decision: captain hold owed-call: approve the API shape
+channel-mate [key=captain-hold-dated-call-1] needs-decision: captain hold dated-call: pick the release train
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit=0)
+
+==================== S4: adversarial malformed / ambiguous [until=] fields (hand-appended to a task log) ====================
+needs-decision [key=word] [until=soon]: free-text date
+needs-decision [key=short] [until=2026-1-5]: short date
+needs-decision [key=twice] [until=2026-12-01] [until=2026-12-02]: two until fields
+needs-decision [key=unclosed] [until=2026-12-01: unclosed bracket
+needs-decision [key=inprose]: note mentions [until=2026-12-01] after the colon
+
+$ FM_STATE_OVERRIDE=<parent>/state bin/fm-wake-drain.sh   # drain #4
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+adv [key=word] needs-decision: free-text date
+adv [key=short] needs-decision: short date
+adv [key=twice] needs-decision: two until fields
+adv [key=unclosed] needs-decision: unclosed bracket
+adv [key=inprose] needs-decision: note mentions [until=2026-12-01] after the colon
+channel-mate [key=captain-hold-owed-call-1] needs-decision: captain hold owed-call: approve the API shape
+channel-mate [key=captain-hold-dated-call-1] needs-decision: captain hold dated-call: pick the release train
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit=0)
+
+==================== S5: per-line cap with a deferral date (220-char cap, shared marker) ====================
+row: capped [key=longk] [until=2026-12-11] needs-decision: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx [truncated]
+row length (chars): 219
+
+==================== S6: captain answers the dated call -> row leaves OPEN DECISIONS ====================
+answer exit=0
+resolved [key=captain-hold-dated-call-1] [at=1795541771]: captain hold dated-call: answered
+
+$ FM_STATE_OVERRIDE=<parent>/state bin/fm-wake-drain.sh   # drain #5
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+channel-mate [key=captain-hold-owed-call-1] needs-decision: captain hold owed-call: approve the API shape
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit=0)
+

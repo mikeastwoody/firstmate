@@ -1,0 +1,27 @@
+### Upgrade path: same status log drained by the BASE drain (68918448), then by the CHANGED drain (a430c799)
+needs-decision [key=k1] [until=2026-12-11] [at=1794375300]: deferred call
+working: continuing
+
+$ <base>/bin/fm-wake-drain.sh
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+task-dated [key=k1] needs-decision: deferred call
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit not captured under zsh; changed-drain exit=0 is shown in drain-until-live-transcript.txt)
+cursor files after base drain: .status-presentation-cursor .task-dated.open-decisions-cursor 
+
+$ <changed>/bin/fm-wake-drain.sh
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+task-dated [key=k1] [until=2026-12-11] needs-decision: deferred call
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit not captured under zsh; changed-drain exit=0 is shown in drain-until-live-transcript.txt)
+cursor files after changed drain: .status-presentation-cursor .task-dated.open-decisions-cursor .task-dated.open-decisions-cursor.timed 
+
+$ <changed>/bin/fm-wake-drain.sh  (after appending a second dated decision; incremental fold)
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+task-dated [key=k1] [until=2026-12-11] needs-decision: deferred call
+task-dated [key=k2] [until=2027-02-01] needs-decision: appended after upgrade
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+(exit not captured under zsh; changed-drain exit=0 is shown in drain-until-live-transcript.txt)
