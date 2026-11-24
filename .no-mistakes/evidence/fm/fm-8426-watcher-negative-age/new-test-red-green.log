@@ -1,0 +1,19 @@
+### target e3e8c6ae (fix + new test)
+ok - fm-guard stale banner: auto-arm fresh beacon without a live watcher is healthy
+ok - fm-guard stale banner: a beacon slightly ahead of the clock is fresh
+ok - fm-guard stale banner: auto-arm stale beacon alarms with the true reason
+ok - fm-guard stale banner: auto-arm stale episode stays one episode across calls
+exit=0
+
+### target test with base 68918448 bin/fm-wake-lib.sh (fix reverted)
+ok - fm-guard stale banner: auto-arm fresh beacon without a live watcher is healthy
+not ok - a future-stamped beacon printed the banner (unexpected: 'WATCHER DOWN')
+--- output ---
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+●  WATCHER DOWN - SUPERVISION IS OFF
+●  1 task(s) in flight, but no watcher has a fresh beacon (last beat: -2s ago, grace 999s).
+●  Trust the emitted supervision protocol for this harness; do not use shell & for watcher repair.
+●  This is a supervision warning only; the guarded operation WILL still run.
+●  watcher supervision needs Stop-owned automatic recovery; inspect the hook registration and startup status before ending the turn.
+●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+exit=1
