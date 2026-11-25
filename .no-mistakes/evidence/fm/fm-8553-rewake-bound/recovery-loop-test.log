@@ -1,0 +1,10 @@
+T2_WATCH_OUTPUT=signal: /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-watch-recovery-loop.I5EV6p/recovery-gap-successor/state/crew.status 
+T2_QUEUE_ROW=1795582800	2	signal	crew.status	signal: /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-watch-recovery-loop.I5EV6p/recovery-gap-successor/state/crew.status
+ok - a resurfacing handling successor stays alive and supervises instead of going blind
+ok - a handling successor resurfaces a row appended during startup
+ok - unacknowledged recovery re-wakes stop after the bound with one notice, keep the episode durable, and reset on acknowledgement
+ok - a budget of 00 falls back to the default bound of 3
+T1_MESSAGES=1
+T1_LOCK_PID=60939
+T1_MARKER=announced:downtime:seed.1.aaa
+ok - unacknowledged recovery is announced at most once per generation and the successor stays alive

@@ -1,0 +1,37 @@
+# lab home: /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.m9CzeT
+# Phase A: the handling turn never runs bin/fm-wake-drain.sh (drain cannot run)
+== failed-drain cycle 1: watcher closed-with-wake
+   wake> check: rearm-resurface
+   counter=1 marker=announced:downtime:manual.1.aaa queued_rows=1
+== failed-drain cycle 2: watcher closed-with-wake
+   wake> check: rearm-resurface
+   counter=2 marker=announced:downtime:21386.1795582945.NJYz4V queued_rows=1
+== failed-drain cycle 3: watcher closed-with-wake
+   wake> check: rearm-resurface
+   counter=3 marker=announced:downtime:23549.1795582947.fwo6Lx queued_rows=1
+== failed-drain cycle 4: watcher closed-with-wake
+   wake> check: rearm-resurface paused - 3 consecutive recovery wakes ended without a successful wake drain acknowledgement, so bin/fm-wake-drain.sh cannot run or its WAKE_ACK_REQUIRED command never ran (for example a full temp disk); recovery re-wakes stay paused until an acknowledgement succeeds, while the recovery episode and its queued wakes stay pending
+   counter=4 marker=announced:downtime:24434.1795582948.X1xMlM queued_rows=1
+== failed-drain cycle 5 (past notice): watcher still-supervising (stopped by driver after 5s)
+   counter=4 marker=announced:downtime:25164.1795582949.tqkNwY queued_rows=1
+# Phase B: while recovery is silenced, a real crew event must still wake
+== failed-drain cycle 6 + crew status append: watcher closed-with-wake
+   wake> signal: /var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T//fm-lab.m9CzeT/state/crew.status
+   counter=4 marker=pending:downtime:33182.1795582963.fMYF1w queued_rows=3
+# triage log lines about the bound:
+   (found) [2026-11-25T06:02:29+0100] recovery re-wake withheld: 4 consecutive recovery wakes without a wake drain acknowledgement
+   (found) [2026-11-25T06:02:41+0100] recovery re-wake withheld: 4 consecutive recovery wakes without a wake drain acknowledgement
+# queue still holds seed row:
+1
+# Phase C: drain recovers - run the real drain and its WAKE_ACK_REQUIRED command
+   ack args: --ack-through 3 --recovery-generation 33182.1795582963.fMYF1w
+   ack exit=0
+   counter after ack=<absent> marker=acked:handling:33182.1795582963.fMYF1w
+# Phase D: drain breaks again - count restarts from zero
+== relapse cycle 1: watcher closed-with-wake
+   wake> check: rearm-resurface
+   counter=1 marker=announced:downtime:37251.1795582966.XFRt0Q queued_rows=1
+== relapse cycle 2: watcher closed-with-wake
+   wake> check: rearm-resurface
+   counter=2 marker=announced:downtime:38435.1795582968.F7e6Ql queued_rows=1
+# lab removed: yes
