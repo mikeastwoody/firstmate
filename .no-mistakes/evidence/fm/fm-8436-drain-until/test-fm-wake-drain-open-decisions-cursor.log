@@ -7,4 +7,4 @@ ok - a cursor-cache read failure refolds decisions without replaying handled unr
 ok - a pre-fix cursor is rebuilt so a previously skipped corr-tagged decision surfaces
 ok - an old fold cache is rebuilt once before same-version incremental reads resume
 ok - a buried decision survives many growing drains with bounded read cost, and resolution durably clears it at bounded cost too
-fm-wake-drain-open-decisions-cursor exit=0
+exit=0

@@ -1,0 +1,19 @@
+## S1: secondmate home defers a captain call with fm-captain-hold.sh hold --until 2026-12-11
+$ (cd mate-home) FM_HOME=$MATE bin/fm-captain-hold.sh hold release-call --title "Choose the release window" --reason "ship before the holidays?" --repo sample --until 2026-12-11
+release-call
+exit=0
+$ (cd mate-home) FM_HOME=$MATE bin/fm-captain-hold.sh hold api-call --title "Choose the API shape" --reason "REST or RPC?" --repo sample
+api-call
+exit=0
+
+--- parent channel $LAB/state/labmate.status ---
+needs-decision [key=captain-hold-release-call-1] [until=2026-12-11] [at=1795686176]: captain hold release-call: ship before the holidays?
+needs-decision [key=captain-hold-api-call-1] [at=1795686183]: captain hold api-call: REST or RPC?
+
+$ FM_HOME=$LAB bin/fm-wake-drain.sh   (parent home drain)
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+labmate [key=captain-hold-release-call-1] [until=2026-12-11] needs-decision: captain hold release-call: ship before the holidays?
+labmate [key=captain-hold-api-call-1] needs-decision: captain hold api-call: REST or RPC?
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+exit=0

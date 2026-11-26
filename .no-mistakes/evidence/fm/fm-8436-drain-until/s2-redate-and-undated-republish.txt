@@ -1,0 +1,35 @@
+## S2a: a repeat drain with nothing new still lists the deferred call with its date (deferred calls stay listed)
+$ FM_HOME=$LAB bin/fm-wake-drain.sh
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+labmate [key=captain-hold-release-call-1] [until=2026-12-11] needs-decision: captain hold release-call: ship before the holidays?
+labmate [key=captain-hold-api-call-1] needs-decision: captain hold api-call: REST or RPC?
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+exit=0
+
+## S2b: captain re-dates the hold to 2026-12-20; newest line wins
+release-call
+exit=0
+$ FM_HOME=$LAB bin/fm-wake-drain.sh
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+labmate [key=captain-hold-api-call-1] needs-decision: captain hold api-call: REST or RPC?
+labmate [key=captain-hold-release-call-1] [until=2026-12-20] needs-decision: captain hold release-call: ship before the holidays?
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+exit=0
+
+## S2c: the hold is republished WITHOUT --until; the later undated line clears the date
+release-call
+exit=0
+--- parent channel ---
+needs-decision [key=captain-hold-release-call-1] [until=2026-12-11] [at=1795686176]: captain hold release-call: ship before the holidays?
+needs-decision [key=captain-hold-api-call-1] [at=1795686183]: captain hold api-call: REST or RPC?
+needs-decision [key=captain-hold-release-call-1] [until=2026-12-20] [at=1795686207]: captain hold release-call: ship before the holidays?
+needs-decision [key=captain-hold-release-call-1] [at=1795686214]: captain hold release-call: ship before the holidays?
+$ FM_HOME=$LAB bin/fm-wake-drain.sh
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+labmate [key=captain-hold-api-call-1] needs-decision: captain hold api-call: REST or RPC?
+labmate [key=captain-hold-release-call-1] needs-decision: captain hold release-call: ship before the holidays?
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+exit=0

@@ -18,4 +18,4 @@ ok - invalid settings refuse the tick without queueing reminders
 ok - task retirement removes the timed cursor and ends reminders
 ok - the actual watcher wakes and exits on an overdue key without any recorded pane
 FM_TEST_COMPLETE
-fm-watch-open-decisions exit=0
+exit=0

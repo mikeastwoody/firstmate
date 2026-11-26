@@ -1,0 +1,50 @@
+## S4-before: first head a430c799 (timed-only drain) - reproduces the reported regression
+$ FM_HOME=$LAB <bin>/fm-wake-drain.sh | grep ^t9
+t9 [key=launch] [until=2026-12-11] needs-decision: ship before the holidays?
+untimed cursor offset after drain: '' (empty = not advanced); timed cursor offset: '90'; status size: 90
+$ FM_HOME=$LAB <bin>/fm-send.sh t9 --resolve-key launch 'ship after the holidays'
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.9wyepC
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+fm-send exit=0
+--- state/t9.status ---
+needs-decision [key=launch] [until=2026-12-11] [at=1794375300]: ship before the holidays?
+resolved [key=launch] [at=1795686350]: answered: ship after the holidays
+--- state/t9.inbox ---
+schema=fm-task-inbox.v1
+at=2026-11-26T09:45:50Z
+body-terminator=1
+--
+ship after the holidays
+--- pane sess:fm-t9 received ---
+: Firstmate instruction waiting: list "$FM_TASK_INBOX"/*.msg in your 't9.inbox' steering inbox, read and act on each in
+numeric order, then mv each into its handled/.
+: Firstmate instruction waiting: list "$FM_TASK_INBOX"/*.msg in your 't9.inbox' steering inbox, read and act on each in
+$ fm_wake_signal_seen_current $LAB/state $LAB/state/t9.status   (the watcher's wake-scan predicate)
+RESULT: close left for the watcher -> WOULD re-wake the home
+open rows for t9 on the next drain: 0
+
+## S4: current head 76c2c476 - deferred [until=] decision answered after the drain
+$ FM_HOME=$LAB <bin>/fm-wake-drain.sh | grep ^t8
+t8 [key=launch] [until=2026-12-11] needs-decision: ship before the holidays?
+untimed cursor offset after drain: '90' (empty = not advanced); timed cursor offset: '90'; status size: 90
+$ FM_HOME=$LAB <bin>/fm-send.sh t8 --resolve-key launch 'ship after the holidays'
+fm-gate-refuse: gate agent lifecycle permitted only against lab home /private/var/folders/t0/8lf233xd7bxcd3x5x09vqgvm0000gn/T/fm-lab.9wyepC
+WARNING: watcher still down (same stale episode; last beat: never, grace 300s) - full banner already printed this episode.
+fm-send exit=0
+--- state/t8.status ---
+needs-decision [key=launch] [until=2026-12-11] [at=1794375300]: ship before the holidays?
+resolved [key=launch] [at=1795686357]: answered: ship after the holidays
+--- state/t8.inbox ---
+schema=fm-task-inbox.v1
+at=2026-11-26T09:45:57Z
+body-terminator=1
+--
+ship after the holidays
+--- pane sess:fm-t8 received ---
+: Firstmate instruction waiting: list "$FM_TASK_INBOX"/*.msg in your 't8.inbox' steering inbox, read and act on each in
+numeric order, then mv each into its handled/.
+: Firstmate instruction waiting: list "$FM_TASK_INBOX"/*.msg in your 't8.inbox' steering inbox, read and act on each in
+$ fm_wake_signal_seen_current $LAB/state $LAB/state/t8.status   (the watcher's wake-scan predicate)
+RESULT: close is self-announced -> does NOT re-wake the home
+open rows for t8 on the next drain: 0
+

@@ -1,0 +1,23 @@
+## S3: adversarial deferral fields and the per-line cap
+--- state/advx.status ---
+needs-decision [key=bad1] [until=next-week]: malformed word date
+needs-decision [key=bad2] [until=2026-1-5]: short-form date
+needs-decision [key=bad3] [until=2026-13-45]: impossible date
+needs-decision [key=longk] [until=2026-12-11]: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+working: busy elsewhere
+$ FM_HOME=$LAB bin/fm-wake-drain.sh
+exit=0
+OPEN DECISIONS (still open, folded from the durable status logs - not just the latest line):
+advx [key=bad1] needs-decision: malformed word date
+advx [key=bad2] needs-decision: short-form date
+advx [key=bad3] needs-decision: impossible date
+advx [key=longk] [until=2026-12-11] needs-decision: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx [truncated]
+labmate [key=captain-hold-api-call-1] needs-decision: captain hold api-call: REST or RPC?
+labmate [key=captain-hold-release-call-1] needs-decision: captain hold release-call: ship before the holidays?
+OPEN DECISIONS: close one by answering it: bin/fm-send.sh <task> --resolve-key <key> '<answer>'
+OPEN DECISIONS: <key> is the [key=...] printed before the verb; a token inside a note is prose, not a key.
+--- byte length of each advx row (cap 220) ---
+  51  advx [key=bad1] needs-decision: malformed word date
+  47  advx [key=bad2] needs-decision: short-form date
+  47  advx [key=bad3] needs-decision: impossible date
+ 219  advx [key=longk] [until=2026-12-11] needs-decision: xxxxxxxx
